@@ -32,7 +32,7 @@
             box-sizing: border-box;
 
             /* --- BACKGROUND IMAGE --- */
-            /* This is now controlled by JavaScript. The URL you set will be applied here. */
+            /* This is now controlled by JavaScript. The file you specify will be applied here. */
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -243,14 +243,16 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // =================================================================
-        // --- 🖼️ IMAGE CONFIGURATION - EDIT YOUR IMAGE PATHS HERE 🖼️ ---
-        // =================================================================
+        // ====================================================================================
+        // --- 🖼️ IMAGE CONFIGURATION - EDIT YOUR IMAGE FILENAMES HERE 🖼️ ---
+        // ====================================================================================
         // Place your logo and background images in the same folder as this HTML file
-        // and enter their filenames below.
-        const logoImagePath = 'logo.png'; // Your logo's filename
-        const backgroundImagePath = 'bg.jpeg'; // Your background's filename
-        // =================================================================
+        // and enter their exact filenames below.
+
+        const logoImagePath = "logo.png"; // Your logo's filename
+
+        const backgroundImagePath = "bg.jpeg"; // Your background's filename
+        // ====================================================================================
 
 
         // =================================================================
@@ -430,7 +432,7 @@
             }
         };
 
-        // Functions to load images from the configured paths
+        // Functions to load the images from the configured paths
         const loadLogo = () => {
             if (logoImagePath) {
                 logoDisplay.style.backgroundImage = `url('${logoImagePath}')`;
