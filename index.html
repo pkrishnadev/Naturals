@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Salon Spin & Win Offer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --main-purple: #692d75;
+      --purple-dark: #482053;
+      --purple-light: #a77cb1;
+      --purple-xlight: #efe5f2;
+      --pure-white: #fff;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--main-purple) 70%, var(--purple-light) 100%);
+      color: var(--main-purple);
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .central-box {
+      margin: 40px auto 0 auto;
+      max-width: 430px;
+      background: var(--pure-white);
+      border-radius: 18px;
+      box-shadow: 0 6px 32px 0 rgba(105, 45, 117, 0.12), 0 1.5px 4px 0 var(--purple-light);
+      padding: 32px 28px 36px 28px;
+      text-align: center;
+    }
+    .logo {
+      max-width: 92px;
+      margin-bottom: 14px;
+      filter: drop-shadow(0 0 8px var(--purple-xlight));
+    }
+    h2 {
+      color: var(--main-purple);
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+    .btn {
+      display: inline-block;
+      background: var(--main-purple);
+      color: var(--pure-white);
+      padding: 13px 28px;
+      margin: 10px auto;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: 500;
+      transition: background 0.2s;
+      cursor: pointer;
+      box-shadow: 0 2px 7px 0 var(--purple-light);
+    }
+    .btn:hover, .btn:focus {
+      background: var(--purple-dark);
+      outline: none;
+    }
+    /* Spin wheel styles */
+    #wheelcanvas {
+      display: block;
+      margin: 20px auto 12px auto;
+      background: var(--purple-xlight);
+      border-radius: 50%;
+      border: 6px solid var(--main-purple);
+      box-shadow: 0 4px 16px rgba(105,45,117,0.12);
+    }
+    /* Popup styles */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 20;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(105,45,117,0.77);
+      justify-content: center;
+      align-items: center;
+    }
+    .popinner {
+      background: var(--pure-white);
+      padding: 38px 28px 28px 28px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(105,45,117,0.16);
+      min-width: 290px;
+      text-align: center;
+    }
+    .popinner h2 {
+      color: var(--main-purple);
+    }
+    .popinner .btn {
+      margin: 20px 0 0 0;
+    }
+    .social-cta {
+      background: var(--purple-xlight);
+      color: var(--main-purple);
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 7px;
+      padding: 11px 0;
+      margin-top: 17px;
+      margin-bottom: 6px;
+    }
+    /* Hide sections by default */
+    #insta-step, #wheel-step { display: none; }
+    /* Show only the relevant step by toggling .active */
+    .active { display: block !important; }
+  </style>
+</head>
+<body>
+  <div class="central-box">
+    <img src="logo-placeholder.png" class="logo" alt="Salon Logo" />
+    <!-- Instagram follow step -->
+    <div id="insta-step">
+      <h2>Follow Us on Instagram<br>to Spin the Wheel</h2>
+      <a class="btn" href="https://www.instagram.com/naturalsadimali/" target="_blank">Follow on Instagram</a>
+      <div>
+        <button class="btn" id="insta-continue">I Have Followed</button>
+      </div>
+    </div>
+    <!-- Spin wheel step -->
+    <div id="wheel-step">
+      <h2>Spin & Win an Exciting Offer!</h2>
+      <canvas id="wheelcanvas" width="320" height="320"></canvas>
+      <button class="btn" id="spinBtn">Spin Now</button>
+    </div>
+  </div>
+  <div class="popup" id="offer-popup">
+    <div class="popinner">
+      <h2>Congratulations!</h2>
+      <div class="social-cta" id="result-text"></div>
+      <button class="btn" id="pop-ok">OK</button>
+      <div id="fb-extra" style="display:none;">
+        <div class="social-cta">Want another spin? <br>Follow us on Facebook!</div>
+        <a class="btn" style="margin-bottom:8px;" href="https://www.facebook.com/naturalsadimali" target="_blank">Follow on Facebook</a>
+        <br>
+        <button class="btn" id="fb-spin-btn">I Have Followed (One More Spin)</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const offers = [
+      "20% off on Botox service",
+      "15% off on Haircut",
+      "Free Eyebrow Threading",
+      "Buy 1 Get 1 Free on Facials",
+      "10% off on Spa Packages"
+    ];
+    // Shades for the wheel
+    const wheelColors = ["#692d75", "#a77cb1", "#efe5f2", "#a77cb1", "#692d75"];
+
+    // Helpers for cookie (single-spin enforcement)
+    function setCookie(n, v, d) {
+      let date = new Date();
+      date.setTime(date.getTime() + (d*24*60*60*1000));
+      document.cookie = n +"="+ v +"; expires="+ date.toUTCString() +"; path=/";
+    }
+    function getCookie(n) {
+      let ca = document.cookie.split(';');
+      for(let i=0;i<ca.length;i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(n + "=") == 0) return c.substring(n.length+1,c.length);
+      }
+      return null;
+    }
+
+    // State startup logic
+    function showStep(step) {
+      document.getElementById("insta-step").classList.remove('active');
+      document.getElementById("wheel-step").classList.remove('active');
+      if (step==="insta") document.getElementById("insta-step").classList.add('active');
+      if (step==="wheel") document.getElementById("wheel-step").classList.add('active');
+    }
+    let mainSpin = !getCookie("spin_done");
+    let fbSpin = !getCookie("fb_spin_done") && getCookie("spin_done");
+    // Start with Instagram if not yet spun
+    if(mainSpin) showStep("insta");
+    else if (fbSpin) { showStep("wheel"); enableFBSpin(); }
+    else showStep(""); // all done
+
+    // Instagram step
+    document.getElementById("insta-continue").onclick = () => {
+      showStep("wheel");
+    };
+
+    // Draw the wheel
+    function drawWheel(selected=-1) {
+      let ctx = wheelcanvas.getContext("2d");
+      ctx.clearRect(0,0,320,320);
+      let N = offers.length, arc = 2*Math.PI/N;
+      for(let i=0;i<N;i++) {
+        ctx.beginPath();
+        ctx.moveTo(160,160);
+        ctx.arc(160,160,145,arc*i,arc*(i+1));
+        ctx.closePath();
+        ctx.fillStyle = wheelColors[i%wheelColors.length];
+        ctx.fill();
+        ctx.lineWidth = i === selected ? 7 : 2.5;
+        ctx.strokeStyle = i === selected ? "#fff" : "#fff";
+        ctx.stroke();
+        ctx.save();
+        ctx.translate(160,160);
+        ctx.rotate(arc*(i+0.5));
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 18px Segoe UI,Arial";
+        ctx.textAlign="left";
+        ctx.fillText(offers[i],35,8);
+        ctx.restore();
+      }
+      // Draw selector arrow
+      ctx.beginPath();
+      ctx.moveTo(160,13);
+      ctx.lineTo(150,35);
+      ctx.lineTo(170,35);
+      ctx.closePath();
+      ctx.fillStyle= "#fff";
+      ctx.shadowColor= "#692d75";
+      ctx.shadowBlur= 8;
+      ctx.fill();
+      ctx.shadowBlur= 0;
+    }
+    drawWheel();
+
+    // Wheel spin/animation logic
+    let spinning = false, canSpin = true, extraSpin = false;
+    let spinBtn = document.getElementById("spinBtn");
+    spinBtn.onclick = function() {
+      if(!canSpin || spinning) return;
+      spinning = true; canSpin = false;
+      spinBtn.disabled = true; spinBtn.innerText = "Spinning...";
+      let N = offers.length, arc = 2*Math.PI/N;
+      let target = Math.floor(Math.random()*N);
+      let totalSpin = 12*Math.PI + target*arc + arc/2;
+      let duration = 3200, start=null;
+      function animate(ts){
+        if(!start) start = ts;
+        let t = (ts-start)/duration; if(t>1) t=1;
+        let angle = totalSpin*t*t*(2-t);
+        wheelcanvas.style.transform = `rotate(${angle*57.3}deg)`;
+        if(t<1) requestAnimationFrame(animate);
+        else{
+          wheelcanvas.style.transform = "";
+          drawWheel(target);
+          setTimeout(()=> {
+            showSpinPopup(offers[target],!extraSpin);
+            if(extraSpin){ setCookie("fb_spin_done","1",2);}
+            else setCookie("spin_done","1",2);
+            setCookie("last_offer",offers[target],2);
+            spinning = false;
+            spinBtn.disabled = true; spinBtn.innerText = "Spin Used";
+          }, 250);
+        }
+      }
+      requestAnimationFrame(animate);
+    };
+
+    // On reload, enforce spin disables
+    if(getCookie("spin_done") && !getCookie("fb_spin_done")) {
+      spinBtn.disabled = false; spinBtn.innerText = "Spin Again";
+      canSpin = true; extraSpin = true;
+    }
+    if(getCookie("fb_spin_done")) {
+      spinBtn.disabled = true; spinBtn.innerText = "Limit Reached";
+    }
+
+    // Offer Popup and Facebook gating
+    function showSpinPopup(offer, showFB) {
+      document.getElementById("offer-popup").style.display = "flex";
+      document.getElementById("result-text").innerText = offer;
+      document.getElementById("fb-extra").style.display = showFB ? "block" : "none";
+    }
+    document.getElementById("pop-ok").onclick = () => {
+      document.getElementById("offer-popup").style.display = "none";
+      if(getCookie("spin_done")&& !getCookie("fb_spin_done")) {
+        showStep(""); // Hide everything until FB
+      }
+    };
+    document.getElementById("fb-spin-btn").onclick = enableFBSpin;
+    function enableFBSpin() {
+      canSpin = true; extraSpin = true;
+      document.getElementById("offer-popup").style.display = "none";
+      showStep("wheel");
+      spinBtn.disabled = false; spinBtn.innerText = "Spin Again";
+      spinBtn.onclick = function() {
+        if(!canSpin || spinning) return;
+        spinning = true; canSpin = false;
+        spinBtn.disabled = true; spinBtn.innerText = "Spinning...";
+        let N = offers.length, arc = 2*Math.PI/N;
+        let target = Math.floor(Math.random()*N);
+        let totalSpin = 12*Math.PI + target*arc + arc/3;
+        let duration = 3000, start=null;
+        function animate(ts){
+          if(!start) start = ts;
+          let t = (ts-start)/duration; if(t>1) t=1;
+          let angle = totalSpin*t*t*(2-t);
+          wheelcanvas.style.transform = `rotate(${angle*57.3}deg)`;
+          if(t<1) requestAnimationFrame(animate);
+          else{
+            wheelcanvas.style.transform = "";
+            drawWheel(target);
+            setTimeout(()=> {
+              showSpinPopup(offers[target],false);
+              setCookie("fb_spin_done","1",2);
+              setCookie("last_offer",offers[target],2);
+              spinning = false;
+              spinBtn.disabled = true; spinBtn.innerText = "Limit Reached";
+            }, 250);
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+    }
+  </script>
+</body>
+</html>
