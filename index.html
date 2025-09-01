@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spin to Win - Naturals Adimali</title>
+    <title>Onam Surprise - Naturals Adimali</title>
     
-    <!-- Google Fonts for a nicer look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -18,7 +17,7 @@
             --dark-accent: #4a1f52;
             --text-color-light: #ffffff;
             --text-color-dark: #333333;
-            --background-gradient: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            --success-color: #28a745;
         }
 
         body {
@@ -28,16 +27,24 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background: var(--background-gradient);
-            color: var(--text-color-dark);
             text-align: center;
             padding: 1rem;
             box-sizing: border-box;
+
+            /* --- BACKGROUND IMAGE --- */
+            /* Replace 'https://placehold.co/1920x1080/f3e5f5/e1bee7?text=BG' with a direct link to your image */
+            background-image: url('https://placehold.co/1920x1080/f3e5f5/e1bee7?text=BG'); 
+            background-size: cover; /* This makes the image cover the entire screen */
+            background-position: center center; /* This centers the image */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-attachment: fixed; /* This makes the image stay in place on scroll */
+            /* Fallback gradient if the image doesn't load */
+            background-color: #f3e5f5;
         }
 
         .main-container {
             background-color: var(--text-color-light);
-            padding: 2rem;
+            padding: clamp(1.5rem, 5vw, 2.5rem);
             border-radius: 15px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
             max-width: 500px;
@@ -45,36 +52,48 @@
             border: 1px solid #ddd;
         }
 
+        /* --- Logo Uploader and Display --- */
         .logo-container {
-            margin-bottom: 1.5rem;
+            position: relative;
+            width: 150px;
+            height: 80px;
+            margin: 0 auto 1.5rem auto;
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            border: 2px dashed var(--light-accent);
+            overflow: hidden; /* Ensures the image stays within the border-radius */
         }
-
-        .logo-container img {
-            max-width: 150px;
-            height: auto;
+        .logo-container p {
+            color: white;
+            margin: 0;
+            padding: 5px;
+            background-color: rgba(0,0,0,0.3);
         }
-
-        h1, h2 {
-            color: var(--primary-color);
-            font-weight: 900;
+        #logo-uploader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
         
-        h3 {
-             color: var(--dark-accent);
-        }
+        h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
+        h1, h2 { color: var(--primary-color); font-weight: 900; }
+        h3 { color: var(--dark-accent); }
+        p { line-height: 1.6; color: #555; font-size: clamp(0.9rem, 2.5vw, 1rem); }
+        hr { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
 
-        p {
-            line-height: 1.6;
-            color: #555;
-        }
-        
-        hr {
-            border: none;
-            border-top: 1px solid #eee;
-            margin: 1.5rem 0;
-        }
-
-        /* --- Social & Action Buttons --- */
+        /* --- Buttons --- */
         .action-button {
             display: inline-block;
             padding: 12px 25px;
@@ -89,102 +108,76 @@
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 4px 15px rgba(105, 45, 117, 0.3);
         }
-
         .action-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(105, 45, 117, 0.5);
         }
-
-        /* --- Spin Wheel Container --- */
-        #spin-container {
-            margin-top: 2rem;
+        .google-button {
+            background: #4285F4;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
+        }
+         .google-button:hover {
+            box-shadow: 0 6px 20px rgba(66, 133, 244, 0.5);
         }
 
+        /* --- Spin Wheel Container (Responsive) --- */
+        #spin-container { margin-top: 2rem; }
         .wheel-wrapper {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: min(80vw, 300px);
             margin: 0 auto;
+            aspect-ratio: 1 / 1;
         }
-
         #spin-wheel {
             width: 100%;
             height: 100%;
-            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1); /* Smooth spin animation */
+            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
-
         .wheel-pointer {
             position: absolute;
-            top: -10px;
-            left: 50%;
+            top: -10px; left: 50%;
             transform: translateX(-50%);
-            width: 0;
-            height: 0;
+            width: 0; height: 0;
             border-left: 15px solid transparent;
             border-right: 15px solid transparent;
             border-top: 30px solid var(--primary-color);
             z-index: 10;
         }
-
         #spin-btn {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
+            width: 26%; height: 26%;
             border-radius: 50%;
             background-color: #fff;
             border: 5px solid #e0e0e0;
             color: var(--primary-color);
             font-weight: 900;
-            font-size: 1.2rem;
+            font-size: clamp(0.8rem, 4vw, 1.2rem);
             cursor: pointer;
             z-index: 10;
             transition: background-color 0.2s, color 0.2s;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
-
-        #spin-btn:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        #spin-btn:disabled {
-            cursor: not-allowed;
-            background-color: #ccc;
-            color: #777;
-        }
-
-        #spin-message {
-            margin-top: 1rem;
-            font-weight: bold;
-            color: var(--dark-accent);
-        }
+        #spin-btn:hover { background-color: var(--primary-color); color: white; }
+        #spin-btn:disabled { cursor: not-allowed; background-color: #ccc; color: #777; }
+        #spin-message { margin-top: 1rem; font-weight: bold; color: var(--dark-accent); }
         
         /* --- Modal and Popup Styles --- */
-        #modal-overlay {
+        .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 0; visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
         }
-
-        #modal-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #offer-popup {
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
+        .popup {
             background: white;
             padding: 2rem;
             border-radius: 10px;
@@ -194,274 +187,295 @@
             transform: scale(0.9);
             transition: transform 0.3s;
         }
-        
-        #modal-overlay.visible #offer-popup {
-            transform: scale(1);
-        }
-
+        .modal-overlay.visible .popup { transform: scale(1); }
         #offer-text {
             font-size: 1.6rem;
             font-weight: 900;
             color: var(--light-accent);
             margin: 1rem 0;
         }
-
         .offer-instructions {
-            font-size: 0.9rem;
-            color: #666;
+            font-size: 0.9rem; color: #666;
             border: 2px dashed var(--light-accent);
             background-color: #f9f4fb;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 10px; border-radius: 5px;
         }
 
-        /* --- Utility Class --- */
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <!-- Space for your logo -->
-        <div class="logo-container">
-            <!-- IMPORTANT: Replace the src with your actual logo file path -->
-            <img src="https://placehold.co/150x60/692d75/white?text=Your+Logo" alt="Salon Logo" onerror="this.onerror=null;this.src='https://placehold.co/150x60/692d75/white?text=Your+Logo';">
+        <div class="logo-container" id="logo-display">
+            <p id="logo-alt-text">Your Logo Here</p>
+            <input type="file" id="logo-uploader" accept="image/*" title="Click to upload a logo or background">
         </div>
 
-        <h1 id="main-heading">Unlock Your Surprise Offer!</h1>
+        <h1 id="main-heading">Onam Surprise Offer!</h1>
 
-        <!-- Step 1: Instagram Follow Gate -->
-        <div id="instagram-gate">
-            <p>Follow us on Instagram to spin the wheel and win an exclusive offer!</p>
-            <a href="https://www.instagram.com/naturalsadimali/" target="_blank" id="follow-insta-btn" class="action-button">
-                Follow on Instagram
-            </a>
+        <!-- Content changes based on user progress -->
+        <div id="main-content">
+             <p>Spin the wheel to win an exclusive offer!</p>
         </div>
 
-        <!-- Step 2: The Spin Wheel -->
         <div id="spin-container" class="hidden">
             <div class="wheel-wrapper">
-                <canvas id="spin-wheel" width="300" height="300"></canvas>
+                <canvas id="spin-wheel"></canvas>
                 <div class="wheel-pointer"></div>
                 <button id="spin-btn">SPIN</button>
             </div>
-             <p id="spin-message">You have 1 spin remaining.</p>
-        </div>
-
-        <!-- Message for users who have used all spins -->
-        <div id="final-message" class="hidden">
-            <h2>Thank You!</h2>
-            <p>You have already claimed your offers. We hope to see you soon!</p>
+            <p id="spin-message">You have 1 spin remaining.</p>
         </div>
     </div>
 
-    <!-- The Popup Modal for showing the offer -->
-    <div id="modal-overlay">
-        <div id="offer-popup">
+    <!-- Initial "Unlock Offer" Popup -->
+    <div id="initial-modal" class="modal-overlay">
+        <div class="popup">
+            <h2>Unlock Your Onam Surprise!</h2>
+            <p>Follow us on Instagram to get your chance to spin and win!</p>
+            <a href="https://www.instagram.com/naturalsadimali/" target="_blank" id="initial-follow-btn" class="action-button">Follow on Instagram</a>
+        </div>
+    </div>
+
+    <!-- Offer Display Popup -->
+    <div id="offer-modal" class="modal-overlay">
+        <div class="popup">
             <h2>Congratulations!</h2>
             <p>You've won:</p>
             <h3 id="offer-text"></h3>
             <p class="offer-instructions">Show this screen at the salon to claim your discount.</p>
-            
-            <!-- Step 3: Facebook Follow Gate for a second spin -->
-            <div id="facebook-gate" class="hidden">
-                <hr>
-                <p>Want another chance? Follow us on Facebook for one more spin!</p>
-                <a href="https://www.facebook.com/naturalsadimali" target="_blank" id="follow-fb-btn" class="action-button">
-                    Follow for Another Spin
-                </a>
-            </div>
-            
+            <hr>
+            <!-- This section changes based on the spin number -->
+            <div id="popup-action-area"></div>
             <button id="close-popup-btn" class="action-button">Close</button>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
 
-            // --- Configuration ---
-            const offers = [
-                { label: '20% Off\nBotox', color: '#DCC3E0' },
-                { label: '15% Off\nHaircut', color: '#B48DC4' },
-                { label: 'Free\nHead Massage', color: '#9F71B2' },
-                { label: '₹500 Off\nFacial', color: '#8D56A1' },
-                { label: '10% Off\nAny Service', color: '#7A3C8F' }
-            ];
-            
-            // --- Element References ---
-            const wheelCanvas = document.getElementById('spin-wheel');
-            const spinBtn = document.getElementById('spin-btn');
-            const instaGate = document.getElementById('instagram-gate');
-            const spinContainer = document.getElementById('spin-container');
-            const modalOverlay = document.getElementById('modal-overlay');
-            const offerPopup = document.getElementById('offer-popup');
-            const offerText = document.getElementById('offer-text');
-            const closePopupBtn = document.getElementById('close-popup-btn');
-            const followInstaBtn = document.getElementById('follow-insta-btn');
-            const facebookGate = document.getElementById('facebook-gate');
-            const followFbBtn = document.getElementById('follow-fb-btn');
-            const finalMessage = document.getElementById('final-message');
-            const mainHeading = document.getElementById('main-heading');
-            const spinMessage = document.getElementById('spin-message');
+        // =================================================================
+        // --- ⚙️ CONFIGURATION - EDIT YOUR OFFERS HERE ⚙️ ---
+        // =================================================================
+        const offers = [
+            { label: '20% Off\nBotox', color: '#DCC3E0' },
+            { label: '15% Off\nHaircut', color: '#B48DC4' },
+            { label: 'Free\nHead Massage', color: '#9F71B2' },
+            { label: '₹500 Off\nFacial', color: '#8D56A1' },
+            { label: '10% Off\nAny Service', color: '#7A3C8F' }
+        ];
+        // =================================================================
 
-            const ctx = wheelCanvas.getContext('2d');
-            const numOffers = offers.length;
-            const sliceAngle = (2 * Math.PI) / numOffers;
-            const radius = wheelCanvas.width / 2;
-            let isSpinning = false;
-            let currentRotation = 0;
+        const wheelCanvas = document.getElementById('spin-wheel');
+        const spinBtn = document.getElementById('spin-btn');
+        const spinContainer = document.getElementById('spin-container');
+        const mainHeading = document.getElementById('main-heading');
+        const mainContent = document.getElementById('main-content');
+        const spinMessage = document.getElementById('spin-message');
+        
+        // Modals
+        const initialModal = document.getElementById('initial-modal');
+        const initialFollowBtn = document.getElementById('initial-follow-btn');
+        const offerModal = document.getElementById('offer-modal');
+        const offerText = document.getElementById('offer-text');
+        const popupActionArea = document.getElementById('popup-action-area');
+        const closePopupBtn = document.getElementById('close-popup-btn');
 
-            // --- State Management (using localStorage for persistence) ---
-            const state = {
-                get hasClickedInsta() { return localStorage.getItem('spinWheel_instaClicked') === 'true'; },
-                set hasClickedInsta(value) { localStorage.setItem('spinWheel_instaClicked', value); },
-                
-                get hasSpunOnce() { return localStorage.getItem('spinWheel_spunOnce') === 'true'; },
-                set hasSpunOnce(value) { localStorage.setItem('spinWheel_spunOnce', value); },
+        // Logo
+        const logoUploader = document.getElementById('logo-uploader');
+        const logoDisplay = document.getElementById('logo-display');
+        const logoAltText = document.getElementById('logo-alt-text');
 
-                get hasClickedFb() { return localStorage.getItem('spinWheel_fbClicked') === 'true'; },
-                set hasClickedFb(value) { localStorage.setItem('spinWheel_fbClicked', value); },
+        const state = {
+            get hasClickedInsta() { return localStorage.getItem('onamSpin_insta') === 'true'; },
+            set hasClickedInsta(v) { localStorage.setItem('onamSpin_insta', v); },
+            get hasSpunOnce() { return localStorage.getItem('onamSpin_spun1') === 'true'; },
+            set hasSpunOnce(v) { localStorage.setItem('onamSpin_spun1', v); },
+            get hasClickedFb() { return localStorage.getItem('onamSpin_fb') === 'true'; },
+            set hasClickedFb(v) { localStorage.setItem('onamSpin_fb', v); },
+            get hasSpunTwice() { return localStorage.getItem('onamSpin_spun2') === 'true'; },
+            set hasSpunTwice(v) { localStorage.setItem('onamSpin_spun2', v); },
+            get logoImage() { return localStorage.getItem('onamSpin_logo'); },
+            set logoImage(v) { localStorage.setItem('onamSpin_logo', v); },
+        };
 
-                get hasSpunTwice() { return localStorage.getItem('spinWheel_spunTwice') === 'true'; },
-                set hasSpunTwice(value) { localStorage.setItem('spinWheel_spunTwice', value); },
-            };
+        const ctx = wheelCanvas.getContext('2d');
+        const numOffers = offers.length;
+        let radius, isSpinning = false, currentRotation = 0;
 
-            // --- Functions ---
-            const drawWheel = () => {
-                ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-                ctx.font = 'bold 16px Inter';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-
-                offers.forEach((offer, i) => {
-                    const angle = i * sliceAngle;
-                    
-                    // Draw slice
-                    ctx.beginPath();
-                    ctx.fillStyle = offer.color;
-                    ctx.moveTo(radius, radius);
-                    ctx.arc(radius, radius, radius - 5, angle, angle + sliceAngle);
-                    ctx.closePath();
-                    ctx.fill();
-                    
-                    // Draw slice border
-                    ctx.strokeStyle = '#fff';
-                    ctx.lineWidth = 3;
-                    ctx.stroke();
-
-                    // Draw text
-                    ctx.save();
-                    ctx.fillStyle = i < 2 ? '#333' : '#fff'; // Dark text on light colors, light on dark
-                    ctx.translate(radius, radius);
-                    ctx.rotate(angle + sliceAngle / 2);
-                    offer.label.split('\n').forEach((line, index) => {
-                         ctx.fillText(line, radius * 0.6, (index - 0.5) * 20);
-                    });
-                    ctx.restore();
-                });
-            };
-
-            const spin = () => {
-                if (isSpinning) return;
-                isSpinning = true;
-                spinBtn.disabled = true;
-
-                const spinAngle = Math.random() * 360 + 360 * 5; // Random spin + 5 full rotations
-                const totalRotation = currentRotation + spinAngle;
-
-                wheelCanvas.style.transform = `rotate(${totalRotation}deg)`;
-                
-                // Wait for animation to end
-                setTimeout(() => {
-                    currentRotation = totalRotation % 360;
-                    const winningIndex = Math.floor((360 - currentRotation + (sliceAngle * 180 / Math.PI / 2)) % 360 / (360 / numOffers));
-                    const winningOffer = offers[winningIndex];
-                    
-                    showPopup(winningOffer.label);
-                    
-                    // Update state after spin
-                    if (!state.hasSpunOnce) {
-                        state.hasSpunOnce = true;
-                    } else {
-                        state.hasSpunTwice = true;
-                    }
-
-                    isSpinning = false;
-                    updateUI();
-                }, 5000); // Must match CSS transition duration
-            };
-
-            const showPopup = (offer) => {
-                offerText.innerText = offer.replace('\n', ' ');
-                modalOverlay.classList.add('visible');
-                
-                // Show Facebook gate only after the first spin
-                if (state.hasSpunOnce && !state.hasSpunTwice) {
-                    facebookGate.classList.remove('hidden');
-                } else {
-                    facebookGate.classList.add('hidden');
-                }
-            };
-            
-            const hidePopup = () => {
-                modalOverlay.classList.remove('visible');
-            };
-
-            const updateUI = () => {
-                // Hide everything by default
-                instaGate.classList.add('hidden');
-                spinContainer.classList.add('hidden');
-                finalMessage.classList.add('hidden');
-                
-                if (state.hasSpunTwice) {
-                    finalMessage.classList.remove('hidden');
-                    mainHeading.innerText = "Offers Claimed!";
-                } else if (state.hasClickedFb && state.hasSpunOnce) {
-                     spinContainer.classList.remove('hidden');
-                     spinBtn.disabled = false;
-                     spinMessage.innerText = 'You have 1 final spin!';
-                } else if (state.hasSpunOnce) {
-                    finalMessage.classList.remove('hidden');
-                    mainHeading.innerText = "Claim Your Prize!";
-                    finalMessage.querySelector('p').innerText = "Follow us on Facebook from the popup to get one more spin!";
-                } else if (state.hasClickedInsta) {
-                    spinContainer.classList.remove('hidden');
-                    spinBtn.disabled = false;
-                    spinMessage.innerText = 'You have 1 spin remaining.';
-                } else {
-                    instaGate.classList.remove('hidden');
-                }
-            };
-
-            // --- Event Listeners ---
-            followInstaBtn.addEventListener('click', () => {
-                state.hasClickedInsta = true;
-                // The UI will update when the user comes back to the page.
-            });
-
-            followFbBtn.addEventListener('click', () => {
-                state.hasClickedFb = true;
-                hidePopup();
-                // We update immediately when they return.
-            });
-
-            spinBtn.addEventListener('click', spin);
-            closePopupBtn.addEventListener('click', hidePopup);
-            
-            // This event checks when the tab becomes visible again.
-            // This is key for updating the UI after the user returns from Instagram/Facebook.
-            document.addEventListener("visibilitychange", () => {
-              if (document.visibilityState === "visible") {
-                updateUI();
-              }
-            });
-
-            // --- Initial Setup ---
+        function setupCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = wheelCanvas.getBoundingClientRect();
+            if (rect.width === 0) return;
+            wheelCanvas.width = rect.width * dpr;
+            wheelCanvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            radius = rect.width / 2;
             drawWheel();
-            updateUI(); // Set initial view based on saved state
+        }
+
+        const drawWheel = () => {
+            if (!radius) return;
+            ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+            ctx.font = `bold ${radius * 0.1}px Inter`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            offers.forEach((offer, i) => {
+                const angle = i * (2 * Math.PI) / numOffers;
+                ctx.beginPath();
+                ctx.fillStyle = offer.color;
+                ctx.moveTo(radius, radius);
+                ctx.arc(radius, radius, radius - 5, angle, angle + (2 * Math.PI) / numOffers);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                ctx.save();
+                ctx.fillStyle = i < 2 ? '#333' : '#fff';
+                ctx.translate(radius, radius);
+                ctx.rotate(angle + (Math.PI / numOffers));
+                offer.label.split('\n').forEach((line, j) => {
+                    ctx.fillText(line, radius * 0.6, (j - 0.5) * (radius * 0.12));
+                });
+                ctx.restore();
+            });
+        };
+
+        const spin = () => {
+            if (isSpinning) return;
+            isSpinning = true;
+            spinBtn.disabled = true;
+
+            // *** FIX: Determine winner BEFORE spin for 100% accuracy ***
+            const winningIndex = Math.floor(Math.random() * numOffers);
+            const winningOffer = offers[winningIndex];
+            const degreesPerSlice = 360 / numOffers;
+            
+            // Calculate the target angle to land in the middle of the winning slice
+            const targetMiddleAngle = (winningIndex * degreesPerSlice) + (degreesPerSlice / 2);
+            
+            // The final rotation needs to place this angle at the top (under the 0-degree pointer)
+            // We also add multiple full rotations for effect and subtract the current rotation.
+            // A random offset is added to make the landing spot in the slice vary.
+            const randomOffset = (Math.random() - 0.5) * (degreesPerSlice * 0.8);
+            const finalAngle = 360 - targetMiddleAngle + randomOffset;
+            const totalRotation = (360 * 5) + finalAngle;
+
+            // Apply the rotation
+            currentRotation = totalRotation;
+            wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
+
+            // After the animation finishes, show the popup
+            setTimeout(() => {
+                showOfferPopup(winningOffer.label);
+                
+                if (!state.hasSpunOnce) state.hasSpunOnce = true;
+                else state.hasSpunTwice = true;
+
+                isSpinning = false;
+                updateUI();
+            }, 5000); // This MUST match the CSS transition duration
+        };
+
+
+        const showOfferPopup = (offer) => {
+            offerText.innerText = offer.replace('\n', ' ');
+            
+            popupActionArea.innerHTML = ''; 
+
+            if (!state.hasSpunOnce) { // First spin offer
+                popupActionArea.innerHTML = `
+                    <p>Want another chance? Follow us on Facebook for one more spin!</p>
+                    <a href="https://www.facebook.com/naturalsadimali" target="_blank" id="popup-follow-fb-btn" class="action-button">Follow for Another Spin</a>
+                `;
+                popupActionArea.querySelector('#popup-follow-fb-btn').addEventListener('click', () => {
+                    state.hasClickedFb = true;
+                    hideOfferPopup();
+                });
+            } else { // Second spin offer
+                popupActionArea.innerHTML = `
+                    <p>Thank you for playing! We'd love to hear from you.</p>
+                    <a href="https://share.google/onjni9SmCISTQt30r" target="_blank" class="action-button google-button">Rate us on Google</a>
+                `;
+            }
+            offerModal.classList.add('visible');
+        };
+        
+        const hideOfferPopup = () => offerModal.classList.remove('visible');
+
+        const updateUI = () => {
+            mainContent.classList.add('hidden');
+            spinContainer.classList.add('hidden');
+
+            if (state.hasSpunTwice) {
+                mainHeading.innerText = "Thank You!";
+                mainContent.innerHTML = `<p>You have claimed all your Onam offers. We hope to see you soon!</p>`;
+                mainContent.classList.remove('hidden');
+            } else if (state.hasClickedFb && state.hasSpunOnce) {
+                mainHeading.innerText = "One Last Spin!";
+                spinContainer.classList.remove('hidden');
+                spinMessage.innerText = 'You have 1 final spin!';
+                spinBtn.disabled = false;
+                setTimeout(setupCanvas, 50);
+            } else if (state.hasSpunOnce) {
+                mainHeading.innerText = "Get Another Spin!";
+                mainContent.innerHTML = `<p>You've used your first spin. For one more chance to win, follow us on Facebook!</p><a href="https://www.facebook.com/naturalsadimali" target="_blank" id="main-follow-fb-btn" class="action-button">Follow for Another Spin</a>`;
+                mainContent.classList.remove('hidden');
+                mainContent.querySelector('#main-follow-fb-btn').addEventListener('click', () => {
+                    state.hasClickedFb = true;
+                });
+            } else if (state.hasClickedInsta) {
+                mainHeading.innerText = "Good Luck!";
+                spinContainer.classList.remove('hidden');
+                spinMessage.innerText = 'You have 1 spin remaining.';
+                spinBtn.disabled = false;
+                setTimeout(setupCanvas, 50);
+            } else {
+                initialModal.classList.add('visible');
+            }
+        };
+
+        const loadLogo = () => {
+            if (state.logoImage) {
+                logoDisplay.style.backgroundImage = `url(${state.logoImage})`;
+                logoAltText.classList.add('hidden');
+            }
+        };
+
+        // --- Event Listeners ---
+        initialFollowBtn.addEventListener('click', () => {
+            state.hasClickedInsta = true;
+            initialModal.classList.remove('visible');
         });
+        
+        closePopupBtn.addEventListener('click', hideOfferPopup);
+        spinBtn.addEventListener('click', spin);
+
+        logoUploader.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    state.logoImage = e.target.result;
+                    loadLogo();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") updateUI();
+        });
+        window.addEventListener('resize', setupCanvas);
+
+        // --- Initial Setup ---
+        loadLogo();
+        updateUI();
+    });
     </script>
 </body>
 </html>
+
