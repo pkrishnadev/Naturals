@@ -32,14 +32,12 @@
             box-sizing: border-box;
 
             /* --- BACKGROUND IMAGE --- */
-            /* Replace 'https://placehold.co/1920x1080/f3e5f5/e1bee7?text=BG' with a direct link to your image */
-            background-image: url('https://placehold.co/1920x1080/f3e5f5/e1bee7?text=BG'); 
-            background-size: cover; /* This makes the image cover the entire screen */
-            background-position: center center; /* This centers the image */
-            background-repeat: no-repeat; /* Prevents the image from repeating */
-            background-attachment: fixed; /* This makes the image stay in place on scroll */
-            /* Fallback gradient if the image doesn't load */
-            background-color: #f3e5f5;
+            /* This is now controlled by JavaScript. The URL you set will be applied here. */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #f3e5f5; /* Fallback color */
         }
 
         .main-container {
@@ -68,23 +66,14 @@
             align-items: center;
             color: white;
             font-weight: bold;
-            border: 2px dashed var(--light-accent);
-            overflow: hidden; /* Ensures the image stays within the border-radius */
+            border: 2px solid var(--light-accent);
+            overflow: hidden; 
         }
         .logo-container p {
             color: white;
             margin: 0;
             padding: 5px;
             background-color: rgba(0,0,0,0.3);
-        }
-        #logo-uploader {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
         }
         
         h1 { font-size: clamp(1.8rem, 5vw, 2.5rem); }
@@ -121,10 +110,10 @@
         }
 
         /* --- Spin Wheel Container (Responsive) --- */
-        #spin-container { margin-top: 2rem; }
+        #spin-container { margin-top: 1.5rem; } 
         .wheel-wrapper {
             position: relative;
-            width: min(80vw, 300px);
+            width: min(85vw, 300px); 
             margin: 0 auto;
             aspect-ratio: 1 / 1;
         }
@@ -209,7 +198,6 @@
     <div class="main-container">
         <div class="logo-container" id="logo-display">
             <p id="logo-alt-text">Your Logo Here</p>
-            <input type="file" id="logo-uploader" accept="image/*" title="Click to upload a logo or background">
         </div>
 
         <h1 id="main-heading">Onam Surprise Offer!</h1>
@@ -256,7 +244,17 @@
     document.addEventListener('DOMContentLoaded', () => {
 
         // =================================================================
-        // --- ⚙️ CONFIGURATION - EDIT YOUR OFFERS HERE ⚙️ ---
+        // --- 🖼️ IMAGE CONFIGURATION - EDIT YOUR IMAGE PATHS HERE 🖼️ ---
+        // =================================================================
+        // Place your logo and background images in the same folder as this HTML file
+        // and enter their filenames below.
+        const logoImagePath = 'logo.png'; // Your logo's filename
+        const backgroundImagePath = 'bg.jpeg'; // Your background's filename
+        // =================================================================
+
+
+        // =================================================================
+        // --- ⚙️ OFFERS CONFIGURATION - EDIT YOUR OFFERS HERE ⚙️ ---
         // =================================================================
         const offers = [
             { label: '20% Off\nBotox', color: '#DCC3E0' },
@@ -283,7 +281,6 @@
         const closePopupBtn = document.getElementById('close-popup-btn');
 
         // Logo
-        const logoUploader = document.getElementById('logo-uploader');
         const logoDisplay = document.getElementById('logo-display');
         const logoAltText = document.getElementById('logo-alt-text');
 
@@ -296,12 +293,11 @@
             set hasClickedFb(v) { localStorage.setItem('onamSpin_fb', v); },
             get hasSpunTwice() { return localStorage.getItem('onamSpin_spun2') === 'true'; },
             set hasSpunTwice(v) { localStorage.setItem('onamSpin_spun2', v); },
-            get logoImage() { return localStorage.getItem('onamSpin_logo'); },
-            set logoImage(v) { localStorage.setItem('onamSpin_logo', v); },
         };
 
         const ctx = wheelCanvas.getContext('2d');
         const numOffers = offers.length;
+        const sliceAngleRad = (2 * Math.PI) / numOffers;
         let radius, isSpinning = false, currentRotation = 0;
 
         function setupCanvas() {
@@ -321,22 +317,26 @@
             ctx.font = `bold ${radius * 0.1}px Inter`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
+            
+            const startAngle = -Math.PI / 2; 
 
             offers.forEach((offer, i) => {
-                const angle = i * (2 * Math.PI) / numOffers;
+                const angle = i * sliceAngleRad;
                 ctx.beginPath();
                 ctx.fillStyle = offer.color;
                 ctx.moveTo(radius, radius);
-                ctx.arc(radius, radius, radius - 5, angle, angle + (2 * Math.PI) / numOffers);
+                ctx.arc(radius, radius, radius - 5, startAngle + angle, startAngle + angle + sliceAngleRad);
                 ctx.closePath();
                 ctx.fill();
+
                 ctx.strokeStyle = '#fff';
                 ctx.lineWidth = 3;
                 ctx.stroke();
+
                 ctx.save();
                 ctx.fillStyle = i < 2 ? '#333' : '#fff';
                 ctx.translate(radius, radius);
-                ctx.rotate(angle + (Math.PI / numOffers));
+                ctx.rotate(startAngle + angle + (sliceAngleRad / 2));
                 offer.label.split('\n').forEach((line, j) => {
                     ctx.fillText(line, radius * 0.6, (j - 0.5) * (radius * 0.12));
                 });
@@ -349,26 +349,18 @@
             isSpinning = true;
             spinBtn.disabled = true;
 
-            // *** FIX: Determine winner BEFORE spin for 100% accuracy ***
             const winningIndex = Math.floor(Math.random() * numOffers);
             const winningOffer = offers[winningIndex];
             const degreesPerSlice = 360 / numOffers;
             
-            // Calculate the target angle to land in the middle of the winning slice
             const targetMiddleAngle = (winningIndex * degreesPerSlice) + (degreesPerSlice / 2);
-            
-            // The final rotation needs to place this angle at the top (under the 0-degree pointer)
-            // We also add multiple full rotations for effect and subtract the current rotation.
-            // A random offset is added to make the landing spot in the slice vary.
             const randomOffset = (Math.random() - 0.5) * (degreesPerSlice * 0.8);
-            const finalAngle = 360 - targetMiddleAngle + randomOffset;
-            const totalRotation = (360 * 5) + finalAngle;
+            const finalRotation = (360 * 5) - targetMiddleAngle + randomOffset;
+            const rotationToGo = finalRotation - (currentRotation % 360);
+            currentRotation += rotationToGo;
 
-            // Apply the rotation
-            currentRotation = totalRotation;
             wheelCanvas.style.transform = `rotate(${currentRotation}deg)`;
 
-            // After the animation finishes, show the popup
             setTimeout(() => {
                 showOfferPopup(winningOffer.label);
                 
@@ -377,7 +369,7 @@
 
                 isSpinning = false;
                 updateUI();
-            }, 5000); // This MUST match the CSS transition duration
+            }, 5000);
         };
 
 
@@ -386,7 +378,7 @@
             
             popupActionArea.innerHTML = ''; 
 
-            if (!state.hasSpunOnce) { // First spin offer
+            if (!state.hasSpunOnce) {
                 popupActionArea.innerHTML = `
                     <p>Want another chance? Follow us on Facebook for one more spin!</p>
                     <a href="https://www.facebook.com/naturalsadimali" target="_blank" id="popup-follow-fb-btn" class="action-button">Follow for Another Spin</a>
@@ -395,7 +387,7 @@
                     state.hasClickedFb = true;
                     hideOfferPopup();
                 });
-            } else { // Second spin offer
+            } else {
                 popupActionArea.innerHTML = `
                     <p>Thank you for playing! We'd love to hear from you.</p>
                     <a href="https://share.google/onjni9SmCISTQt30r" target="_blank" class="action-button google-button">Rate us on Google</a>
@@ -438,12 +430,20 @@
             }
         };
 
+        // Functions to load images from the configured paths
         const loadLogo = () => {
-            if (state.logoImage) {
-                logoDisplay.style.backgroundImage = `url(${state.logoImage})`;
+            if (logoImagePath) {
+                logoDisplay.style.backgroundImage = `url('${logoImagePath}')`;
                 logoAltText.classList.add('hidden');
             }
         };
+        
+        const loadBg = () => {
+             if (backgroundImagePath) {
+                document.body.style.backgroundImage = `url('${backgroundImagePath}')`;
+            }
+        };
+
 
         // --- Event Listeners ---
         initialFollowBtn.addEventListener('click', () => {
@@ -454,18 +454,6 @@
         closePopupBtn.addEventListener('click', hideOfferPopup);
         spinBtn.addEventListener('click', spin);
 
-        logoUploader.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    state.logoImage = e.target.result;
-                    loadLogo();
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         document.addEventListener("visibilitychange", () => {
             if (document.visibilityState === "visible") updateUI();
         });
@@ -473,6 +461,7 @@
 
         // --- Initial Setup ---
         loadLogo();
+        loadBg();
         updateUI();
     });
     </script>
