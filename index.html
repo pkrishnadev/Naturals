@@ -338,6 +338,46 @@
             margin-bottom: 0.5rem;
         }
 
+        /* --- Current Reward Display --- */
+        .current-reward {
+            background: linear-gradient(135deg, #f9f4fb 0%, #e8d7ee 100%);
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin: 1.2rem 0;
+            border: 2px dashed var(--primary-light);
+            animation: rewardSlideIn 0.6s ease-out;
+        }
+
+        @keyframes rewardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .current-reward h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .reward-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            margin: 0.5rem 0;
+            line-height: 1.3;
+        }
+
+        .reward-note {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
         /* --- Modal and Popup Styles --- */
         .modal-overlay {
             position: fixed;
@@ -556,19 +596,21 @@
             <p>Celebrate the festival of joy with exclusive offers from Naturals Adimali</p>
         </div>
 
+        <!-- Current Reward Display -->
+        <div id="current-reward-container" class="current-reward hidden">
+            <h3>Your Current Reward</h3>
+            <div id="current-reward-text" class="reward-text"></div>
+            <p class="reward-note">Show this at the salon to claim your offer</p>
+        </div>
+
+        <!-- Progress Indicator -->
         <div class="progress-indicator">
             <div class="progress-dot" id="step1-dot"></div>
             <div class="progress-dot" id="step2-dot"></div>
             <div class="progress-dot" id="step3-dot"></div>
         </div>
 
-        <div id="claimed-offer-display" class="hidden">
-            <h2>Your Last Won Offer</h2>
-            <p style="margin-bottom: 0.5rem;">Show this screen at the salon to claim your reward:</p>
-            <p id="claimed-offer-text" style="font-weight: 800; font-size: clamp(1.4rem, 4vw, 1.8rem); color: var(--primary-color); margin: 0.5rem 0;"></p>
-            <hr>
-        </div>
-
+        <!-- Content changes based on user progress -->
         <div id="main-content">
             <p>Spin the wheel to win an exclusive Onam offer!</p>
             <p class="highlight">Follow us on Instagram to unlock your spin!</p>
@@ -583,6 +625,7 @@
             <p id="spin-message">You have 1 spin remaining.</p>
         </div>
 
+        <!-- Thank You Section (initially hidden) -->
         <div id="thank-you-container" class="thank-you-section hidden">
             <h2>Thank You!</h2>
             <p>You have claimed all your Onam offers. We hope to see you soon!</p>
@@ -591,6 +634,7 @@
         </div>
     </div>
 
+    <!-- Initial "Unlock Offer" Popup -->
     <div id="initial-modal" class="modal-overlay">
         <div class="popup">
             <h2>Unlock Your Onam Surprise!</h2>
@@ -599,6 +643,7 @@
         </div>
     </div>
 
+    <!-- Offer Display Popup -->
     <div id="offer-modal" class="modal-overlay">
         <div class="popup">
             <h2>Congratulations!</h2>
@@ -606,6 +651,7 @@
             <h3 id="offer-text"></h3>
             <p class="offer-instructions">Show this screen at the salon to claim your discount.</p>
             <hr>
+            <!-- This section changes based on the spin number -->
             <div id="popup-action-area"></div>
             <button id="close-popup-btn" class="action-button">Close</button>
         </div>
@@ -642,6 +688,8 @@
         const step1Dot = document.getElementById('step1-dot');
         const step2Dot = document.getElementById('step2-dot');
         const step3Dot = document.getElementById('step3-dot');
+        const currentRewardContainer = document.getElementById('current-reward-container');
+        const currentRewardText = document.getElementById('current-reward-text');
         
         // Modals
         const initialModal = document.getElementById('initial-modal');
@@ -653,10 +701,6 @@
 
         // Logo
         const logoDisplay = document.getElementById('logo-display');
-        
-        // NEW: Claimed offer display elements
-        const claimedOfferDisplay = document.getElementById('claimed-offer-display');
-        const claimedOfferText = document.getElementById('claimed-offer-text');
 
         const state = {
             get hasClickedInsta() { return localStorage.getItem('onamSpin_insta') === 'true'; },
@@ -667,9 +711,8 @@
             set hasClickedFb(v) { localStorage.setItem('onamSpin_fb', v); },
             get hasSpunTwice() { return localStorage.getItem('onamSpin_spun2') === 'true'; },
             set hasSpunTwice(v) { localStorage.setItem('onamSpin_spun2', v); },
-            // NEW: State for last won offer
-            get lastOffer() { return localStorage.getItem('onamSpin_lastOffer'); },
-            set lastOffer(v) { localStorage.setItem('onamSpin_lastOffer', v); },
+            get currentReward() { return localStorage.getItem('onamSpin_currentReward') || ''; },
+            set currentReward(v) { localStorage.setItem('onamSpin_currentReward', v); }
         };
 
         const ctx = wheelCanvas.getContext('2d');
@@ -687,6 +730,15 @@
             if (state.hasClickedInsta) step1Dot.classList.add('active');
             if (state.hasSpunOnce) step2Dot.classList.add('active');
             if (state.hasSpunTwice) step3Dot.classList.add('active');
+        }
+
+        function updateCurrentRewardDisplay() {
+            if (state.currentReward) {
+                currentRewardText.textContent = state.currentReward.replace('\n', ' ');
+                currentRewardContainer.classList.remove('hidden');
+            } else {
+                currentRewardContainer.classList.add('hidden');
+            }
         }
 
         function createConfetti() {
@@ -727,7 +779,7 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            const startAngle = -Math.PI / 2;    
+            const startAngle = -Math.PI / 2; 
 
             offers.forEach((offer, i) => {
                 const angle = i * sliceAngleRad;
@@ -775,11 +827,11 @@
 
             setTimeout(() => {
                 createConfetti();
-                
-                // NEW: Save the latest offer to localStorage
-                state.lastOffer = winningOffer.label;
-                
                 showOfferPopup(winningOffer.label);
+                
+                // Store the current reward
+                state.currentReward = winningOffer.label;
+                updateCurrentRewardDisplay();
                 
                 if (!state.hasSpunOnce) state.hasSpunOnce = true;
                 else state.hasSpunTwice = true;
@@ -819,15 +871,9 @@
             mainContent.classList.add('hidden');
             spinContainer.classList.add('hidden');
             thankYouContainer.classList.add('hidden');
-            claimedOfferDisplay.classList.add('hidden'); // Reset claimed offer display
 
             updateProgressDots();
-
-            // NEW: Check if there's a claimed offer and display it
-            if (state.lastOffer) {
-                claimedOfferText.innerText = state.lastOffer.replace('\n', ' ');
-                claimedOfferDisplay.classList.remove('hidden');
-            }
+            updateCurrentRewardDisplay();
 
             if (state.hasSpunTwice) {
                 mainHeading.innerText = "Thank You!";
