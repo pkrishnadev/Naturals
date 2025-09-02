@@ -556,14 +556,19 @@
             <p>Celebrate the festival of joy with exclusive offers from Naturals Adimali</p>
         </div>
 
-        <!-- Progress Indicator -->
         <div class="progress-indicator">
             <div class="progress-dot" id="step1-dot"></div>
             <div class="progress-dot" id="step2-dot"></div>
             <div class="progress-dot" id="step3-dot"></div>
         </div>
 
-        <!-- Content changes based on user progress -->
+        <div id="claimed-offer-display" class="hidden">
+            <h2>Your Last Won Offer</h2>
+            <p style="margin-bottom: 0.5rem;">Show this screen at the salon to claim your reward:</p>
+            <p id="claimed-offer-text" style="font-weight: 800; font-size: clamp(1.4rem, 4vw, 1.8rem); color: var(--primary-color); margin: 0.5rem 0;"></p>
+            <hr>
+        </div>
+
         <div id="main-content">
             <p>Spin the wheel to win an exclusive Onam offer!</p>
             <p class="highlight">Follow us on Instagram to unlock your spin!</p>
@@ -578,7 +583,6 @@
             <p id="spin-message">You have 1 spin remaining.</p>
         </div>
 
-        <!-- Thank You Section (initially hidden) -->
         <div id="thank-you-container" class="thank-you-section hidden">
             <h2>Thank You!</h2>
             <p>You have claimed all your Onam offers. We hope to see you soon!</p>
@@ -587,7 +591,6 @@
         </div>
     </div>
 
-    <!-- Initial "Unlock Offer" Popup -->
     <div id="initial-modal" class="modal-overlay">
         <div class="popup">
             <h2>Unlock Your Onam Surprise!</h2>
@@ -596,7 +599,6 @@
         </div>
     </div>
 
-    <!-- Offer Display Popup -->
     <div id="offer-modal" class="modal-overlay">
         <div class="popup">
             <h2>Congratulations!</h2>
@@ -604,7 +606,6 @@
             <h3 id="offer-text"></h3>
             <p class="offer-instructions">Show this screen at the salon to claim your discount.</p>
             <hr>
-            <!-- This section changes based on the spin number -->
             <div id="popup-action-area"></div>
             <button id="close-popup-btn" class="action-button">Close</button>
         </div>
@@ -652,6 +653,10 @@
 
         // Logo
         const logoDisplay = document.getElementById('logo-display');
+        
+        // NEW: Claimed offer display elements
+        const claimedOfferDisplay = document.getElementById('claimed-offer-display');
+        const claimedOfferText = document.getElementById('claimed-offer-text');
 
         const state = {
             get hasClickedInsta() { return localStorage.getItem('onamSpin_insta') === 'true'; },
@@ -662,6 +667,9 @@
             set hasClickedFb(v) { localStorage.setItem('onamSpin_fb', v); },
             get hasSpunTwice() { return localStorage.getItem('onamSpin_spun2') === 'true'; },
             set hasSpunTwice(v) { localStorage.setItem('onamSpin_spun2', v); },
+            // NEW: State for last won offer
+            get lastOffer() { return localStorage.getItem('onamSpin_lastOffer'); },
+            set lastOffer(v) { localStorage.setItem('onamSpin_lastOffer', v); },
         };
 
         const ctx = wheelCanvas.getContext('2d');
@@ -719,7 +727,7 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            const startAngle = -Math.PI / 2; 
+            const startAngle = -Math.PI / 2;    
 
             offers.forEach((offer, i) => {
                 const angle = i * sliceAngleRad;
@@ -767,6 +775,10 @@
 
             setTimeout(() => {
                 createConfetti();
+                
+                // NEW: Save the latest offer to localStorage
+                state.lastOffer = winningOffer.label;
+                
                 showOfferPopup(winningOffer.label);
                 
                 if (!state.hasSpunOnce) state.hasSpunOnce = true;
@@ -807,8 +819,15 @@
             mainContent.classList.add('hidden');
             spinContainer.classList.add('hidden');
             thankYouContainer.classList.add('hidden');
+            claimedOfferDisplay.classList.add('hidden'); // Reset claimed offer display
 
             updateProgressDots();
+
+            // NEW: Check if there's a claimed offer and display it
+            if (state.lastOffer) {
+                claimedOfferText.innerText = state.lastOffer.replace('\n', ' ');
+                claimedOfferDisplay.classList.remove('hidden');
+            }
 
             if (state.hasSpunTwice) {
                 mainHeading.innerText = "Thank You!";
