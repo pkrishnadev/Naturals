@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diwali Surprise - Naturals Adimali</title>
+    <title>Diwali Dhamaka - Naturals Adimali</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,15 +13,16 @@
     <style>
         /* --- General Body and Theme Styles --- */
         :root {
-            --primary-color: #6a0dad; /* A rich purple */
-            --primary-light: #9370db; /* Medium purple */
-            --light-accent: #e6e6fa; /* Lavender */
-            --dark-accent: #4b0082; /* Indigo */
-            --gold-accent: #ffd700; /* Gold for highlights */
-            --orange-accent: #ff8c00; /* Dark Orange */
+            --primary-color: #c0392b; /* Deep Red/Orange */
+            --primary-light: #e74c3c; /* Bright Red/Orange */
+            --light-accent: #f1c40f; /* Gold/Yellow */
+            --dark-accent: #88251b; /* Darker Red */
             --text-color-light: #ffffff;
             --text-color-dark: #333333;
             --success-color: #28a745;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
         }
 
         * {
@@ -39,7 +40,7 @@
             margin: 0;
             text-align: center;
             padding: 1rem;
-            background: linear-gradient(rgba(75, 0, 130, 0.85), rgba(106, 13, 173, 0.9)), url('bg.jpeg');
+            background: linear-gradient(rgba(192, 57, 43, 0.8), rgba(136, 37, 27, 0.9)), url('bg.jpeg');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -49,7 +50,7 @@
         }
 
         .main-container {
-            background: linear-gradient(135deg, #ffffff 0%, #f9f4fb 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f4 100%);
             padding: clamp(1.5rem, 5vw, 2.5rem);
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
@@ -79,7 +80,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, var(--gold-accent), var(--orange-accent), var(--primary-light));
+            background: linear-gradient(90deg, var(--gold), var(--light-accent), var(--primary-light));
             z-index: 1;
         }
 
@@ -110,7 +111,7 @@
 
         h1 {
             font-size: clamp(1.8rem, 6vw, 2.8rem);
-            background: linear-gradient(135deg, var(--primary-color), var(--orange-accent));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -131,7 +132,20 @@
                 transform: translateY(0);
             }
         }
-        
+
+        h2 {
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: clamp(1.4rem, 4vw, 1.8rem);
+            margin: 1rem 0;
+        }
+
+        h3 {
+            color: var(--dark-accent);
+            font-weight: 700;
+            font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+        }
+
         p {
             line-height: 1.7;
             color: #555;
@@ -139,10 +153,15 @@
             margin-bottom: 1rem;
         }
 
+        .highlight {
+            color: var(--primary-light);
+            font-weight: 700;
+        }
+
         hr {
             border: none;
             height: 2px;
-            background: linear-gradient(to right, transparent, var(--primary-light), transparent);
+            background: linear-gradient(to right, transparent, var(--light-accent), transparent);
             margin: 1.8rem 0;
         }
 
@@ -159,7 +178,7 @@
             margin: 0.5rem;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 5px 15px rgba(106, 13, 173, 0.4);
+            box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4);
             font-size: clamp(0.95rem, 2.5vw, 1.05rem);
             position: relative;
             overflow: hidden;
@@ -182,7 +201,7 @@
 
         .action-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(106, 13, 173, 0.5);
+            box-shadow: 0 8px 20px rgba(192, 57, 43, 0.5);
         }
 
         .google-button {
@@ -196,7 +215,7 @@
 
         /* --- Spin Wheel Container (Responsive) --- */
         #spin-container {
-            margin: 1.5rem 0 1rem 0;
+            margin: 2rem 0 1rem 0;
             animation: fadeIn 1s ease-out;
         }
 
@@ -248,7 +267,7 @@
             height: 26%;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            border: 3px solid var(--gold-accent);
+            border: none;
             color: white;
             font-weight: 800;
             font-size: clamp(0.85rem, 4vw, 1.3rem);
@@ -263,9 +282,9 @@
         }
 
         @keyframes spinBtnPulse {
-            0% { box-shadow: 0 0 0 0 rgba(106, 13, 173, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(106, 13, 173, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(106, 13, 173, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(192, 57, 43, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
         }
 
         #spin-btn:hover {
@@ -291,10 +310,10 @@
         /* --- Thank You Section --- */
         .thank-you-section {
             padding: 1.5rem;
-            background: rgba(147, 112, 219, 0.1);
+            background: rgba(22, 160, 133, 0.05);
             border-radius: 12px;
             margin: 1.5rem 0;
-            border: 1px dashed var(--primary-light);
+            border: 1px dashed var(--light-accent);
             animation: thankYouFadeIn 1s ease-out;
         }
 
@@ -321,7 +340,7 @@
 
         /* --- Current Reward Display --- */
         .current-reward {
-            background: linear-gradient(135deg, #f9f4fb 0%, #e8d7ee 100%);
+            background: linear-gradient(135deg, #fff9f4 0%, #fdebd0 100%);
             padding: 1.2rem;
             border-radius: 12px;
             margin: 1.2rem 0;
@@ -339,7 +358,7 @@
                 transform: translateY(0);
             }
         }
-        
+
         .current-reward h3 {
             color: var(--primary-color);
             margin-bottom: 0.5rem;
@@ -383,7 +402,7 @@
         }
 
         .popup {
-            background: linear-gradient(135deg, #ffffff 0%, #f9f4fb 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f4 100%);
             padding: 2.5rem;
             border-radius: 20px;
             width: 90%;
@@ -414,7 +433,7 @@
         #offer-text {
             font-size: clamp(1.6rem, 5vw, 2.2rem);
             font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-color), var(--orange-accent));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -433,8 +452,8 @@
         .offer-instructions {
             font-size: 1rem;
             color: #666;
-            border: 2px dashed var(--primary-light);
-            background-color: rgba(147, 112, 219, 0.1);
+            border: 2px dashed var(--light-accent);
+            background-color: rgba(241, 196, 15, 0.1);
             padding: 12px;
             border-radius: 8px;
             margin: 1.2rem 0;
@@ -448,7 +467,7 @@
         .decoration {
             position: absolute;
             z-index: -1;
-            opacity: 0.15;
+            opacity: 0.1;
             animation: float 6s infinite ease-in-out;
         }
 
@@ -458,21 +477,41 @@
             100% { transform: translateY(0) rotate(0deg); }
         }
 
-        .decoration.lamp-1 {
+        .decoration.diwali-1 {
             top: 10%;
             left: 5%;
             font-size: 3rem;
-            color: var(--gold-accent);
+            color: var(--primary-color);
             transform: rotate(25deg);
         }
 
-        .decoration.lamp-2 {
+        .decoration.diwali-2 {
             bottom: 10%;
             right: 5%;
             font-size: 3rem;
-            color: var(--orange-accent);
+            color: var(--primary-light);
             transform: rotate(-15deg);
-            animation-delay: -3s;
+        }
+
+        /* --- Progress Indicator --- */
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+            gap: 8px;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active {
+            background-color: var(--primary-color);
+            transform: scale(1.2);
         }
 
         /* --- Responsive Design --- */
@@ -480,15 +519,32 @@
             .main-container {
                 padding: 1.5rem;
             }
+
             .logo-container {
                 width: 150px;
                 height: 85px;
             }
+
             .popup {
                 padding: 1.8rem;
             }
         }
-        
+
+        @media (max-width: 350px) {
+            .logo-container {
+                width: 130px;
+                height: 75px;
+            }
+
+            .wheel-wrapper {
+                width: 95vw;
+            }
+
+            .action-button {
+                padding: 12px 24px;
+            }
+        }
+
         /* Animation for celebration */
         @keyframes confetti {
             0% {
@@ -510,28 +566,52 @@
             z-index: 1000;
             animation: confetti 3s ease-in-out;
         }
+
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 4px solid rgba(192, 57, 43, 0.1);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <i class="decoration lamp-1 fas fa-star"></i>
-    <i class="decoration lamp-2 fas fa-star"></i>
+    <i class="decoration diwali-1 fas fa-star"></i>
+    <i class="decoration diwali-2 fas fa-om"></i>
 
     <div class="main-container">
         <div class="logo-container" id="logo-display"></div>
 
         <div class="header">
-            <h1 id="main-heading">Diwali Surprise Offer!</h1>
-            <p>Celebrate the festival of lights with exclusive offers from Naturals Adimali!</p>
+            <h1 id="main-heading">Diwali Dhamaka Offer!</h1>
+            <p>Celebrate the festival of lights with exclusive offers from Naturals Adimali</p>
         </div>
 
         <div id="current-reward-container" class="current-reward hidden">
-            <h3>Your Diwali Reward</h3>
+            <h3>Your Current Reward</h3>
             <div id="current-reward-text" class="reward-text"></div>
             <p class="reward-note">Show this at the salon to claim your offer</p>
         </div>
 
+        <div class="progress-indicator">
+            <div class="progress-dot" id="step1-dot"></div>
+            <div class="progress-dot" id="step2-dot"></div>
+            <div class="progress-dot" id="step3-dot"></div>
+        </div>
+
         <div id="main-content">
-            </div>
+            <p>Spin the wheel to win an exclusive Diwali offer!</p>
+            <p class="highlight">Follow us on Instagram to unlock your spin!</p>
+        </div>
 
         <div id="spin-container" class="hidden">
             <div class="wheel-wrapper">
@@ -539,14 +619,22 @@
                 <div class="wheel-pointer"></div>
                 <button id="spin-btn">SPIN</button>
             </div>
-            <p id="spin-message">You have 1 spin. Good luck!</p>
+            <p id="spin-message">You have 1 spin remaining.</p>
         </div>
 
         <div id="thank-you-container" class="thank-you-section hidden">
-            <h2>Happy Diwali!</h2>
-            <p>You have claimed your Diwali offer. We hope to see you soon!</p>
-            <p>Visit our salon to enjoy your reward.</p>
+            <h2>Thank You!</h2>
+            <p>You have claimed your Diwali offers. We hope to see you soon!</p>
+            <p>Visit our salon to enjoy your rewards.</p>
             <a href="https://share.google/onjni9SmCISTQt30r" target="_blank" class="action-button google-button">Rate us on Google</a>
+        </div>
+    </div>
+
+    <div id="initial-modal" class="modal-overlay">
+        <div class="popup">
+            <h2>Unlock Your Diwali Surprise!</h2>
+            <p>Follow us on Instagram to get your chance to spin and win!</p>
+            <a href="https://www.instagram.com/naturalsadimali/" target="_blank" id="initial-follow-btn" class="action-button">Follow on Instagram</a>
         </div>
     </div>
 
@@ -557,10 +645,7 @@
             <h3 id="offer-text"></h3>
             <p class="offer-instructions">Show this screen at the salon to claim your discount.</p>
             <hr>
-            <div id="popup-action-area">
-                 <p>Thank you for playing! We'd love to hear from you.</p>
-                 <a href="https://share.google/onjni9SmCISTQt30r" target="_blank" class="action-button google-button">Rate us on Google</a>
-            </div>
+            <div id="popup-action-area"></div>
             <button id="close-popup-btn" class="action-button">Close</button>
         </div>
     </div>
@@ -578,15 +663,14 @@
         // --- ⚙️ OFFERS CONFIGURATION - EDIT YOUR OFFERS HERE ⚙️ ---
         // =================================================================
         const offers = [
-            { label: '15% Off\non all services', color: '#DCC3E0' },
-            { label: '25% Off\nHaircut', color: '#B48DC4' },
-            { label: 'Free\nThreading', color: '#9F71B2' },
-            { label: '₹500off on\n2000 service', color: '#8D56A1' },
-            { label: 'for pedicure\nManicure free', color: '#7A3C8F' }
+            { label: '15% Off\non all services', color: '#f39c12' },  // Orange
+            { label: '25% Off\nHaircut', color: '#e67e22' },            // Darker Orange
+            { label: 'Free\nThreading', color: '#d35400' },          // Burnt Orange
+            { label: '₹500off on\n2000 service', color: '#c0392b' }, // Pomegranate Red
+            { label: 'for pedicure\nManicure free', color: '#e74c3c' } // Alizarin Red
         ];
         // =================================================================
 
-        // --- Element Selectors ---
         const wheelCanvas = document.getElementById('spin-wheel');
         const spinBtn = document.getElementById('spin-btn');
         const spinContainer = document.getElementById('spin-container');
@@ -594,27 +678,52 @@
         const mainContent = document.getElementById('main-content');
         const spinMessage = document.getElementById('spin-message');
         const thankYouContainer = document.getElementById('thank-you-container');
+        const step1Dot = document.getElementById('step1-dot');
+        const step2Dot = document.getElementById('step2-dot');
+        const step3Dot = document.getElementById('step3-dot');
         const currentRewardContainer = document.getElementById('current-reward-container');
         const currentRewardText = document.getElementById('current-reward-text');
+        
+        // Modals
+        const initialModal = document.getElementById('initial-modal');
+        const initialFollowBtn = document.getElementById('initial-follow-btn');
         const offerModal = document.getElementById('offer-modal');
         const offerText = document.getElementById('offer-text');
+        const popupActionArea = document.getElementById('popup-action-area');
         const closePopupBtn = document.getElementById('close-popup-btn');
+
+        // Logo
         const logoDisplay = document.getElementById('logo-display');
 
-        // --- SIMPLIFIED LOGIC FOR DIWALI CAMPAIGN ---
-        // We now only need to track if the user has spun once.
-        // The localStorage key is changed to 'diwaliSpin_2025_...' to reset for everyone.
         const state = {
-            get hasSpun() { return localStorage.getItem('diwaliSpin_2025_hasSpun') === 'true'; },
-            set hasSpun(v) { localStorage.setItem('diwaliSpin_2025_hasSpun', v); },
-            get currentReward() { return localStorage.getItem('diwaliSpin_2025_currentReward') || ''; },
-            set currentReward(v) { localStorage.setItem('diwaliSpin_2025_currentReward', v); }
+            get hasClickedInsta() { return localStorage.getItem('onamSpin_insta') === 'true'; },
+            set hasClickedInsta(v) { localStorage.setItem('onamSpin_insta', v); },
+            get hasSpunOnce() { return localStorage.getItem('onamSpin_spun1') === 'true'; },
+            set hasSpunOnce(v) { localStorage.setItem('onamSpin_spun1', v); },
+            get hasClickedFb() { return localStorage.getItem('onamSpin_fb') === 'true'; },
+            set hasClickedFb(v) { localStorage.setItem('onamSpin_fb', v); },
+            get hasSpunTwice() { return localStorage.getItem('onamSpin_spun2') === 'true'; },
+            set hasSpunTwice(v) { localStorage.setItem('onamSpin_spun2', v); },
+            get currentReward() { return localStorage.getItem('onamSpin_currentReward') || ''; },
+            set currentReward(v) { localStorage.setItem('onamSpin_currentReward', v); }
         };
 
         const ctx = wheelCanvas.getContext('2d');
         const numOffers = offers.length;
         const sliceAngleRad = (2 * Math.PI) / numOffers;
         let radius, isSpinning = false, currentRotation = 0;
+
+        function updateProgressDots() {
+            // Reset all dots
+            step1Dot.classList.remove('active');
+            step2Dot.classList.remove('active');
+            step3Dot.classList.remove('active');
+            
+            // Activate based on progress
+            if (state.hasClickedInsta) step1Dot.classList.add('active');
+            if (state.hasSpunOnce) step2Dot.classList.add('active');
+            if (state.hasSpunTwice) step3Dot.classList.add('active');
+        }
 
         function updateCurrentRewardDisplay() {
             if (state.currentReward) {
@@ -626,7 +735,7 @@
         }
 
         function createConfetti() {
-            const colors = ['#6a0dad', '#9370db', '#ffd700', '#ff8c00', '#ffffff'];
+            const colors = ['#c0392b', '#e74c3c', '#f1c40f', '#88251b', '#ffd700', '#f39c12'];
             for (let i = 0; i < 50; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
@@ -638,6 +747,7 @@
                 confetti.style.animationDelay = Math.random() * 2 + 's';
                 document.body.appendChild(confetti);
                 
+                // Remove confetti after animation completes
                 setTimeout(() => {
                     confetti.remove();
                 }, 3000);
@@ -662,7 +772,7 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
-            const startAngle = -Math.PI / 2;
+            const startAngle = -Math.PI / 2; 
 
             offers.forEach((offer, i) => {
                 const angle = i * sliceAngleRad;
@@ -678,7 +788,7 @@
                 ctx.stroke();
 
                 ctx.save();
-                ctx.fillStyle = i < 2 ? '#333' : '#fff';
+                ctx.fillStyle = '#fff'; // White text for all segments for better contrast on warm colors
                 ctx.translate(radius, radius);
                 ctx.rotate(startAngle + angle + (sliceAngleRad / 2));
                 offer.label.split('\n').forEach((line, j) => {
@@ -692,6 +802,8 @@
             if (isSpinning) return;
             isSpinning = true;
             spinBtn.disabled = true;
+
+            // Show loading state
             spinMessage.textContent = "Spinning...";
 
             const winningIndex = Math.floor(Math.random() * numOffers);
@@ -710,54 +822,106 @@
                 createConfetti();
                 showOfferPopup(winningOffer.label);
                 
-                // Store the current reward and mark as spun
+                // Store the current reward
                 state.currentReward = winningOffer.label;
-                state.hasSpun = true;
+                updateCurrentRewardDisplay();
+                
+                if (!state.hasSpunOnce) state.hasSpunOnce = true;
+                else state.hasSpunTwice = true;
 
                 isSpinning = false;
-                updateUI(); // Update UI to reflect the spun state
+                updateUI();
             }, 5000);
         };
 
         const showOfferPopup = (offer) => {
             offerText.innerText = offer.replace('\n', ' ');
+            
+            popupActionArea.innerHTML = ''; 
+
+            if (!state.hasSpunOnce) {
+                popupActionArea.innerHTML = `
+                    <p>Want another chance? Follow us on Facebook for one more spin!</p>
+                    <a href="https://www.facebook.com/naturalsadimali" target="_blank" id="popup-follow-fb-btn" class="action-button">Follow for Another Spin</a>
+                `;
+                popupActionArea.querySelector('#popup-follow-fb-btn').addEventListener('click', () => {
+                    state.hasClickedFb = true;
+                    hideOfferPopup();
+                    updateUI();
+                });
+            } else {
+                popupActionArea.innerHTML = `
+                    <p>Thank you for playing! We'd love to hear from you.</p>
+                    <a href="https://share.google/onjni9SmCISTQt30r" target="_blank" class="action-button google-button">Rate us on Google</a>
+                `;
+            }
             offerModal.classList.add('visible');
         };
         
         const hideOfferPopup = () => offerModal.classList.remove('visible');
 
         const updateUI = () => {
-            if (state.hasSpun) {
-                // User has already spun, show the thank you message
+            mainContent.classList.add('hidden');
+            spinContainer.classList.add('hidden');
+            thankYouContainer.classList.add('hidden');
+
+            updateProgressDots();
+            updateCurrentRewardDisplay();
+
+            if (state.hasSpunTwice) {
                 mainHeading.innerText = "Happy Diwali!";
                 thankYouContainer.classList.remove('hidden');
-                spinContainer.classList.add('hidden');
-                mainContent.classList.add('hidden');
-                updateCurrentRewardDisplay(); // Show the reward they won
-            } else {
-                // User has not spun yet, show the wheel
-                mainHeading.innerText = "Spin to Win!";
+            } else if (state.hasClickedFb && state.hasSpunOnce) {
+                mainHeading.innerText = "One Last Spin!";
                 spinContainer.classList.remove('hidden');
-                mainContent.classList.add('hidden');
-                thankYouContainer.classList.add('hidden');
+                spinMessage.innerText = 'You have 1 final spin!';
                 spinBtn.disabled = false;
-                setTimeout(setupCanvas, 50); // Ensure canvas is drawn
+                setTimeout(setupCanvas, 50);
+            } else if (state.hasSpunOnce) {
+                mainHeading.innerText = "Get Another Spin!";
+                mainContent.innerHTML = `<p>You've used your first spin. For one more chance to win, follow us on Facebook!</p><a href="https://www.facebook.com/naturalsadimali" target="_blank" id="main-follow-fb-btn" class="action-button">Follow for Another Spin</a>`;
+                mainContent.classList.remove('hidden');
+                mainContent.querySelector('#main-follow-fb-btn').addEventListener('click', () => {
+                    state.hasClickedFb = true;
+                    updateUI();
+                });
+            } else if (state.hasClickedInsta) {
+                mainHeading.innerText = "Good Luck!";
+                spinContainer.classList.remove('hidden');
+                spinMessage.innerText = 'You have 1 spin remaining.';
+                spinBtn.disabled = false;
+                setTimeout(setupCanvas, 50);
+            } else {
+                initialModal.classList.add('visible');
             }
         };
 
+        // Functions to load images from the configured paths
         const loadLogo = () => {
-            if (logoImagePath) logoDisplay.style.backgroundImage = `url('${logoImagePath}')`;
+            if (logoImagePath) {
+                logoDisplay.style.backgroundImage = `url('${logoImagePath}')`;
+            }
         };
         
         const loadBg = () => {
             if (backgroundImagePath) {
-                document.body.style.backgroundImage = `linear-gradient(rgba(75, 0, 130, 0.85), rgba(106, 13, 173, 0.9)), url('${backgroundImagePath}')`;
+                document.body.style.backgroundImage = `linear-gradient(rgba(192, 57, 43, 0.8), rgba(136, 37, 27, 0.9)), url('${backgroundImagePath}')`;
             }
         };
 
         // --- Event Listeners ---
+        initialFollowBtn.addEventListener('click', () => {
+            state.hasClickedInsta = true;
+            initialModal.classList.remove('visible');
+            updateUI();
+        });
+        
         closePopupBtn.addEventListener('click', hideOfferPopup);
         spinBtn.addEventListener('click', spin);
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") updateUI();
+        });
         window.addEventListener('resize', setupCanvas);
 
         // --- Initial Setup ---
