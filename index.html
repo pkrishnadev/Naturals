@@ -109,6 +109,11 @@
             position: relative;
         }
 
+        h1, h2 {
+            /* IMPROVEMENT: Balances text lines to prevent widows */
+            text-wrap: balance;
+        }
+
         h1 {
             font-size: clamp(1.8rem, 6vw, 2.8rem);
             background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
@@ -175,13 +180,15 @@
             border: none;
             border-radius: 50px;
             font-weight: 700;
-            margin: 0.5rem;
+            margin: 0; /* Margin is now handled by the flex container */
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4);
             font-size: clamp(0.95rem, 2.5vw, 1.05rem);
             position: relative;
             overflow: hidden;
+            width: 100%; /* Make buttons full-width inside flex container */
+            max-width: 300px; /* Optional: constrain max button width */
         }
 
         .action-button::before {
@@ -310,11 +317,16 @@
         /* --- Thank You Section --- */
         .thank-you-section {
             padding: 1.5rem;
-            background: rgba(22, 160, 133, 0.05);
+            /* IMPROVEMENT: Matched background color to the Diwali theme */
+            background: rgba(241, 196, 15, 0.1);
             border-radius: 12px;
-            margin: 1.5rem 0;
+            margin: 1.5rem 0 0;
             border: 1px dashed var(--light-accent);
             animation: thankYouFadeIn 1s ease-out;
+        }
+        
+        .thank-you-section .action-button {
+            margin-top: 1rem;
         }
 
         @keyframes thankYouFadeIn {
@@ -370,6 +382,7 @@
             color: var(--primary-light);
             margin: 0.5rem 0;
             line-height: 1.3;
+            text-wrap: balance;
         }
 
         .reward-note {
@@ -441,6 +454,7 @@
             line-height: 1.3;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             animation: offerTextPulse 2s infinite;
+            text-wrap: balance;
         }
 
         @keyframes offerTextPulse {
@@ -457,6 +471,15 @@
             padding: 12px;
             border-radius: 8px;
             margin: 1.2rem 0;
+        }
+        
+        /* IMPROVEMENT: Flex container for popup buttons for better alignment */
+        .popup-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem; /* Space between buttons */
+            margin-top: 1rem;
         }
 
         .hidden {
@@ -596,16 +619,16 @@
             <p>Celebrate the festival of lights with exclusive offers from Naturals Adimali</p>
         </div>
 
-        <div id="current-reward-container" class="current-reward hidden">
-            <h3>Your Current Reward</h3>
-            <div id="current-reward-text" class="reward-text"></div>
-            <p class="reward-note">Show this at the salon to claim your offer</p>
-        </div>
-
         <div class="progress-indicator">
             <div class="progress-dot" id="step1-dot"></div>
             <div class="progress-dot" id="step2-dot"></div>
             <div class="progress-dot" id="step3-dot"></div>
+        </div>
+
+        <div id="current-reward-container" class="current-reward hidden">
+            <h3>Your Current Reward</h3>
+            <div id="current-reward-text" class="reward-text"></div>
+            <p class="reward-note">Show this at the salon to claim your offer</p>
         </div>
 
         <div id="main-content">
@@ -634,7 +657,9 @@
         <div class="popup">
             <h2>Unlock Your Diwali Surprise!</h2>
             <p>Follow us on Instagram to get your chance to spin and win!</p>
-            <a href="https://www.instagram.com/naturalsadimali/" target="_blank" id="initial-follow-btn" class="action-button">Follow on Instagram</a>
+            <div class="popup-actions">
+                <a href="https://www.instagram.com/naturalsadimali/" target="_blank" id="initial-follow-btn" class="action-button">Follow on Instagram</a>
+            </div>
         </div>
     </div>
 
@@ -646,7 +671,6 @@
             <p class="offer-instructions">Show this screen at the salon to claim your discount.</p>
             <hr>
             <div id="popup-action-area"></div>
-            <button id="close-popup-btn" class="action-button">Close</button>
         </div>
     </div>
 
@@ -666,8 +690,8 @@
             { label: '15% Off\non all services', color: '#f39c12' },  // Orange
             { label: '25% Off\nHaircut', color: '#e67e22' },            // Darker Orange
             { label: 'Free\nThreading', color: '#d35400' },          // Burnt Orange
-            { label: '₹500off on\n2000 service', color: '#c0392b' }, // Pomegranate Red
-            { label: 'for pedicure\nManicure free', color: '#e74c3c' } // Alizarin Red
+            { label: '₹500 Off on\n₹2000 Service', color: '#c0392b' }, // Pomegranate Red
+            { label: 'Pedicure\nGet Manicure Free', color: '#e74c3c' } // Alizarin Red
         ];
         // =================================================================
 
@@ -690,11 +714,7 @@
         const offerModal = document.getElementById('offer-modal');
         const offerText = document.getElementById('offer-text');
         const popupActionArea = document.getElementById('popup-action-area');
-        const closePopupBtn = document.getElementById('close-popup-btn');
-
-        // Logo
-        const logoDisplay = document.getElementById('logo-display');
-
+        
         const state = {
             get hasClickedInsta() { return localStorage.getItem('onamSpin_insta') === 'true'; },
             set hasClickedInsta(v) { localStorage.setItem('onamSpin_insta', v); },
@@ -727,7 +747,7 @@
 
         function updateCurrentRewardDisplay() {
             if (state.currentReward) {
-                currentRewardText.textContent = state.currentReward.replace('\n', ' ');
+                currentRewardText.textContent = state.currentReward.replace(/\n/g, ' ');
                 currentRewardContainer.classList.remove('hidden');
             } else {
                 currentRewardContainer.classList.add('hidden');
@@ -747,10 +767,7 @@
                 confetti.style.animationDelay = Math.random() * 2 + 's';
                 document.body.appendChild(confetti);
                 
-                // Remove confetti after animation completes
-                setTimeout(() => {
-                    confetti.remove();
-                }, 3000);
+                setTimeout(() => confetti.remove(), 3000);
             }
         }
 
@@ -768,7 +785,7 @@
         const drawWheel = () => {
             if (!radius) return;
             ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-            ctx.font = `bold ${Math.max(radius * 0.1, 14)}px Inter`;
+            ctx.font = `bold ${Math.max(radius * 0.1, 12)}px Inter`; // Slightly smaller base font size
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
@@ -788,12 +805,21 @@
                 ctx.stroke();
 
                 ctx.save();
-                ctx.fillStyle = '#fff'; // White text for all segments for better contrast on warm colors
+                ctx.fillStyle = '#fff';
                 ctx.translate(radius, radius);
                 ctx.rotate(startAngle + angle + (sliceAngleRad / 2));
-                offer.label.split('\n').forEach((line, j) => {
-                    ctx.fillText(line, radius * 0.6, (j - 0.5) * (radius * 0.12));
+                
+                // --- IMPROVEMENT: Perfect vertical centering for multi-line text ---
+                const lines = offer.label.split('\n');
+                const lineHeight = parseFloat(ctx.font) * 1.2;
+                const totalTextHeight = lines.length * lineHeight;
+                const startY = -totalTextHeight / 2 + lineHeight / 2;
+                
+                lines.forEach((line, j) => {
+                    ctx.fillText(line, radius * 0.55, startY + (j * lineHeight));
                 });
+                // --- End of improvement ---
+
                 ctx.restore();
             });
         };
@@ -802,8 +828,6 @@
             if (isSpinning) return;
             isSpinning = true;
             spinBtn.disabled = true;
-
-            // Show loading state
             spinMessage.textContent = "Spinning...";
 
             const winningIndex = Math.floor(Math.random() * numOffers);
@@ -822,7 +846,6 @@
                 createConfetti();
                 showOfferPopup(winningOffer.label);
                 
-                // Store the current reward
                 state.currentReward = winningOffer.label;
                 updateCurrentRewardDisplay();
                 
@@ -835,27 +858,41 @@
         };
 
         const showOfferPopup = (offer) => {
-            offerText.innerText = offer.replace('\n', ' ');
+            offerText.innerText = offer.replace(/\n/g, ' ');
             
-            popupActionArea.innerHTML = ''; 
-
+            let actionButtonsHTML = '';
             if (!state.hasSpunOnce) {
-                popupActionArea.innerHTML = `
+                actionButtonsHTML = `
                     <p>Want another chance? Follow us on Facebook for one more spin!</p>
                     <a href="https://www.facebook.com/naturalsadimali" target="_blank" id="popup-follow-fb-btn" class="action-button">Follow for Another Spin</a>
                 `;
-                popupActionArea.querySelector('#popup-follow-fb-btn').addEventListener('click', () => {
-                    state.hasClickedFb = true;
-                    hideOfferPopup();
-                    updateUI();
-                });
             } else {
-                popupActionArea.innerHTML = `
+                actionButtonsHTML = `
                     <p>Thank you for playing! We'd love to hear from you.</p>
                     <a href="https://share.google/onjni9SmCISTQt30r" target="_blank" class="action-button google-button">Rate us on Google</a>
                 `;
             }
+
+            // IMPROVEMENT: Using a flex container for buttons
+            popupActionArea.innerHTML = `
+                <div class="popup-actions">
+                    ${actionButtonsHTML}
+                    <button id="close-popup-btn" class="action-button">Close</button>
+                </div>
+            `;
+            
             offerModal.classList.add('visible');
+            
+            // Add event listeners after injecting the HTML
+            offerModal.querySelector('#close-popup-btn').addEventListener('click', hideOfferPopup);
+            const fbBtn = offerModal.querySelector('#popup-follow-fb-btn');
+            if (fbBtn) {
+                fbBtn.addEventListener('click', () => {
+                    state.hasClickedFb = true;
+                    hideOfferPopup();
+                    updateUI();
+                });
+            }
         };
         
         const hideOfferPopup = () => offerModal.classList.remove('visible');
@@ -879,7 +916,7 @@
                 setTimeout(setupCanvas, 50);
             } else if (state.hasSpunOnce) {
                 mainHeading.innerText = "Get Another Spin!";
-                mainContent.innerHTML = `<p>You've used your first spin. For one more chance to win, follow us on Facebook!</p><a href="https://www.facebook.com/naturalsadimali" target="_blank" id="main-follow-fb-btn" class="action-button">Follow for Another Spin</a>`;
+                mainContent.innerHTML = `<p>You've used your first spin. For one more chance to win, follow us on Facebook!</p><div class="popup-actions" style="margin-top:0"><a href="https://www.facebook.com/naturalsadimali" target="_blank" id="main-follow-fb-btn" class="action-button">Follow for Another Spin</a></div>`;
                 mainContent.classList.remove('hidden');
                 mainContent.querySelector('#main-follow-fb-btn').addEventListener('click', () => {
                     state.hasClickedFb = true;
@@ -896,11 +933,8 @@
             }
         };
 
-        // Functions to load images from the configured paths
         const loadLogo = () => {
-            if (logoImagePath) {
-                logoDisplay.style.backgroundImage = `url('${logoImagePath}')`;
-            }
+            if (logoImagePath) logoDisplay.style.backgroundImage = `url('${logoImagePath}')`;
         };
         
         const loadBg = () => {
@@ -909,22 +943,18 @@
             }
         };
 
-        // --- Event Listeners ---
         initialFollowBtn.addEventListener('click', () => {
             state.hasClickedInsta = true;
             initialModal.classList.remove('visible');
             updateUI();
         });
         
-        closePopupBtn.addEventListener('click', hideOfferPopup);
         spinBtn.addEventListener('click', spin);
-
         document.addEventListener("visibilitychange", () => {
             if (document.visibilityState === "visible") updateUI();
         });
         window.addEventListener('resize', setupCanvas);
 
-        // --- Initial Setup ---
         loadLogo();
         loadBg();
         updateUI();
