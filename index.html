@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diwali Dhamaka - Naturals Adimali</title>
+    <title>Diwali Surprise - Naturals Adimali</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,16 +13,20 @@
     <style>
         /* --- General Body and Theme Styles --- */
         :root {
-            --primary-color: #c0392b; /* Deep Red/Orange */
-            --primary-light: #e74c3c; /* Bright Red/Orange */
-            --light-accent: #f1c40f; /* Gold/Yellow */
-            --dark-accent: #88251b; /* Darker Red */
+            --primary-color: #d35400;
+            --primary-light: #e67e22;
+            --light-accent: #f39c12;
+            --dark-accent: #a04000;
             --text-color-light: #ffffff;
             --text-color-dark: #333333;
             --success-color: #28a745;
             --gold: #ffd700;
             --silver: #c0c0c0;
             --bronze: #cd7f32;
+            --diwali-gold: #ff9f43;
+            --diwali-orange: #ff7f00;
+            --diwali-red: #e84118;
+            --diwali-yellow: #fbc531;
         }
 
         * {
@@ -40,7 +44,7 @@
             margin: 0;
             text-align: center;
             padding: 1rem;
-            background: linear-gradient(rgba(192, 57, 43, 0.8), rgba(136, 37, 27, 0.9)), url('bg.jpeg');
+            background: linear-gradient(rgba(211, 84, 0, 0.8), rgba(160, 64, 0, 0.9)), url('bg.jpeg');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -50,7 +54,7 @@
         }
 
         .main-container {
-            background: linear-gradient(135deg, #ffffff 0%, #fff9f4 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f2 100%);
             padding: clamp(1.5rem, 5vw, 2.5rem);
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
@@ -80,7 +84,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, var(--gold), var(--light-accent), var(--primary-light));
+            background: linear-gradient(90deg, var(--diwali-gold), var(--diwali-orange), var(--diwali-red));
             z-index: 1;
         }
 
@@ -178,7 +182,7 @@
             margin: 0.5rem;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4);
+            box-shadow: 0 5px 15px rgba(211, 84, 0, 0.4);
             font-size: clamp(0.95rem, 2.5vw, 1.05rem);
             position: relative;
             overflow: hidden;
@@ -201,7 +205,7 @@
 
         .action-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(192, 57, 43, 0.5);
+            box-shadow: 0 8px 20px rgba(211, 84, 0, 0.5);
         }
 
         .google-button {
@@ -282,9 +286,9 @@
         }
 
         @keyframes spinBtnPulse {
-            0% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(192, 57, 43, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(192, 57, 43, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(211, 84, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(211, 84, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(211, 84, 0, 0); }
         }
 
         #spin-btn:hover {
@@ -310,7 +314,7 @@
         /* --- Thank You Section --- */
         .thank-you-section {
             padding: 1.5rem;
-            background: rgba(22, 160, 133, 0.05);
+            background: rgba(243, 156, 18, 0.1);
             border-radius: 12px;
             margin: 1.5rem 0;
             border: 1px dashed var(--light-accent);
@@ -340,7 +344,7 @@
 
         /* --- Current Reward Display --- */
         .current-reward {
-            background: linear-gradient(135deg, #fff9f4 0%, #fdebd0 100%);
+            background: linear-gradient(135deg, #fff9f2 0%, #ffeed9 100%);
             padding: 1.2rem;
             border-radius: 12px;
             margin: 1.2rem 0;
@@ -402,7 +406,7 @@
         }
 
         .popup {
-            background: linear-gradient(135deg, #ffffff 0%, #fff9f4 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f2 100%);
             padding: 2.5rem;
             border-radius: 20px;
             width: 90%;
@@ -453,7 +457,7 @@
             font-size: 1rem;
             color: #666;
             border: 2px dashed var(--light-accent);
-            background-color: rgba(241, 196, 15, 0.1);
+            background-color: rgba(243, 156, 18, 0.1);
             padding: 12px;
             border-radius: 8px;
             margin: 1.2rem 0;
@@ -477,19 +481,19 @@
             100% { transform: translateY(0) rotate(0deg); }
         }
 
-        .decoration.diwali-1 {
+        .decoration.diya-1 {
             top: 10%;
             left: 5%;
             font-size: 3rem;
-            color: var(--primary-color);
+            color: var(--diwali-orange);
             transform: rotate(25deg);
         }
 
-        .decoration.diwali-2 {
+        .decoration.diya-2 {
             bottom: 10%;
             right: 5%;
             font-size: 3rem;
-            color: var(--primary-light);
+            color: var(--diwali-yellow);
             transform: rotate(-15deg);
         }
 
@@ -561,7 +565,7 @@
             position: fixed;
             width: 10px;
             height: 10px;
-            background-color: var(--primary-color);
+            background-color: var(--diwali-orange);
             opacity: 0;
             z-index: 1000;
             animation: confetti 3s ease-in-out;
@@ -572,7 +576,7 @@
             width: 40px;
             height: 40px;
             margin: 20px auto;
-            border: 4px solid rgba(192, 57, 43, 0.1);
+            border: 4px solid rgba(211, 84, 0, 0.1);
             border-left: 4px solid var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -585,29 +589,32 @@
     </style>
 </head>
 <body>
-    <i class="decoration diwali-1 fas fa-star"></i>
-    <i class="decoration diwali-2 fas fa-om"></i>
+    <i class="decoration diya-1 fas fa-fire"></i>
+    <i class="decoration diya-2 fas fa-fire"></i>
 
     <div class="main-container">
         <div class="logo-container" id="logo-display"></div>
 
         <div class="header">
-            <h1 id="main-heading">Diwali Dhamaka Offer!</h1>
+            <h1 id="main-heading">Diwali Surprise Offer!</h1>
             <p>Celebrate the festival of lights with exclusive offers from Naturals Adimali</p>
         </div>
 
+        <!-- Current Reward Display -->
         <div id="current-reward-container" class="current-reward hidden">
             <h3>Your Current Reward</h3>
             <div id="current-reward-text" class="reward-text"></div>
             <p class="reward-note">Show this at the salon to claim your offer</p>
         </div>
 
+        <!-- Progress Indicator -->
         <div class="progress-indicator">
             <div class="progress-dot" id="step1-dot"></div>
             <div class="progress-dot" id="step2-dot"></div>
             <div class="progress-dot" id="step3-dot"></div>
         </div>
 
+        <!-- Content changes based on user progress -->
         <div id="main-content">
             <p>Spin the wheel to win an exclusive Diwali offer!</p>
             <p class="highlight">Follow us on Instagram to unlock your spin!</p>
@@ -622,14 +629,16 @@
             <p id="spin-message">You have 1 spin remaining.</p>
         </div>
 
+        <!-- Thank You Section (initially hidden) -->
         <div id="thank-you-container" class="thank-you-section hidden">
             <h2>Thank You!</h2>
-            <p>You have claimed your Diwali offers. We hope to see you soon!</p>
+            <p>You have claimed all your Diwali offers. We hope to see you soon!</p>
             <p>Visit our salon to enjoy your rewards.</p>
             <a href="https://share.google/onjni9SmCISTQt30r" target="_blank" class="action-button google-button">Rate us on Google</a>
         </div>
     </div>
 
+    <!-- Initial "Unlock Offer" Popup -->
     <div id="initial-modal" class="modal-overlay">
         <div class="popup">
             <h2>Unlock Your Diwali Surprise!</h2>
@@ -638,6 +647,7 @@
         </div>
     </div>
 
+    <!-- Offer Display Popup -->
     <div id="offer-modal" class="modal-overlay">
         <div class="popup">
             <h2>Congratulations!</h2>
@@ -645,6 +655,7 @@
             <h3 id="offer-text"></h3>
             <p class="offer-instructions">Show this screen at the salon to claim your discount.</p>
             <hr>
+            <!-- This section changes based on the spin number -->
             <div id="popup-action-area"></div>
             <button id="close-popup-btn" class="action-button">Close</button>
         </div>
@@ -663,11 +674,11 @@
         // --- ⚙️ OFFERS CONFIGURATION - EDIT YOUR OFFERS HERE ⚙️ ---
         // =================================================================
         const offers = [
-            { label: '15% Off\non all services', color: '#f39c12' },  // Orange
-            { label: '25% Off\nHaircut', color: '#e67e22' },            // Darker Orange
-            { label: 'Free\nThreading', color: '#d35400' },          // Burnt Orange
-            { label: '₹500off on\n2000 service', color: '#c0392b' }, // Pomegranate Red
-            { label: 'for pedicure\nManicure free', color: '#e74c3c' } // Alizarin Red
+            { label: '15% Off\non all services', color: '#FFD8A9' },
+            { label: '25% Off\nHaircut', color: '#FFB142' },
+            { label: 'Free\nThreading', color: '#FF9F43' },
+            { label: '₹500off on\n2000 service', color: '#FF7F00' },
+            { label: 'for pedicure\nManicure free', color: '#E84118' }
         ];
         // =================================================================
 
@@ -696,16 +707,16 @@
         const logoDisplay = document.getElementById('logo-display');
 
         const state = {
-            get hasClickedInsta() { return localStorage.getItem('onamSpin_insta') === 'true'; },
-            set hasClickedInsta(v) { localStorage.setItem('onamSpin_insta', v); },
-            get hasSpunOnce() { return localStorage.getItem('onamSpin_spun1') === 'true'; },
-            set hasSpunOnce(v) { localStorage.setItem('onamSpin_spun1', v); },
-            get hasClickedFb() { return localStorage.getItem('onamSpin_fb') === 'true'; },
-            set hasClickedFb(v) { localStorage.setItem('onamSpin_fb', v); },
-            get hasSpunTwice() { return localStorage.getItem('onamSpin_spun2') === 'true'; },
-            set hasSpunTwice(v) { localStorage.setItem('onamSpin_spun2', v); },
-            get currentReward() { return localStorage.getItem('onamSpin_currentReward') || ''; },
-            set currentReward(v) { localStorage.setItem('onamSpin_currentReward', v); }
+            get hasClickedInsta() { return localStorage.getItem('diwaliSpin_insta') === 'true'; },
+            set hasClickedInsta(v) { localStorage.setItem('diwaliSpin_insta', v); },
+            get hasSpunOnce() { return localStorage.getItem('diwaliSpin_spun1') === 'true'; },
+            set hasSpunOnce(v) { localStorage.setItem('diwaliSpin_spun1', v); },
+            get hasClickedFb() { return localStorage.getItem('diwaliSpin_fb') === 'true'; },
+            set hasClickedFb(v) { localStorage.setItem('diwaliSpin_fb', v); },
+            get hasSpunTwice() { return localStorage.getItem('diwaliSpin_spun2') === 'true'; },
+            set hasSpunTwice(v) { localStorage.setItem('diwaliSpin_spun2', v); },
+            get currentReward() { return localStorage.getItem('diwaliSpin_currentReward') || ''; },
+            set currentReward(v) { localStorage.setItem('diwaliSpin_currentReward', v); }
         };
 
         const ctx = wheelCanvas.getContext('2d');
@@ -735,7 +746,7 @@
         }
 
         function createConfetti() {
-            const colors = ['#c0392b', '#e74c3c', '#f1c40f', '#88251b', '#ffd700', '#f39c12'];
+            const colors = ['#d35400', '#e67e22', '#f39c12', '#a04000', '#ffd700', '#ff9f43'];
             for (let i = 0; i < 50; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
@@ -788,7 +799,7 @@
                 ctx.stroke();
 
                 ctx.save();
-                ctx.fillStyle = '#fff'; // White text for all segments for better contrast on warm colors
+                ctx.fillStyle = i < 2 ? '#333' : '#fff';
                 ctx.translate(radius, radius);
                 ctx.rotate(startAngle + angle + (sliceAngleRad / 2));
                 offer.label.split('\n').forEach((line, j) => {
@@ -869,7 +880,7 @@
             updateCurrentRewardDisplay();
 
             if (state.hasSpunTwice) {
-                mainHeading.innerText = "Happy Diwali!";
+                mainHeading.innerText = "Thank You!";
                 thankYouContainer.classList.remove('hidden');
             } else if (state.hasClickedFb && state.hasSpunOnce) {
                 mainHeading.innerText = "One Last Spin!";
@@ -905,7 +916,7 @@
         
         const loadBg = () => {
             if (backgroundImagePath) {
-                document.body.style.backgroundImage = `linear-gradient(rgba(192, 57, 43, 0.8), rgba(136, 37, 27, 0.9)), url('${backgroundImagePath}')`;
+                document.body.style.backgroundImage = `linear-gradient(rgba(211, 84, 0, 0.8), rgba(160, 64, 0, 0.9)), url('${backgroundImagePath}')`;
             }
         };
 
