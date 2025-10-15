@@ -110,6 +110,7 @@
         }
 
         h1, h2 {
+            /* IMPROVEMENT: Balances text lines to prevent widows */
             text-wrap: balance;
         }
 
@@ -179,15 +180,15 @@
             border: none;
             border-radius: 50px;
             font-weight: 700;
-            margin: 0;
+            margin: 0; /* Margin is now handled by the flex container */
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4);
             font-size: clamp(0.95rem, 2.5vw, 1.05rem);
             position: relative;
             overflow: hidden;
-            width: 100%;
-            max-width: 300px;
+            width: 100%; /* Make buttons full-width inside flex container */
+            max-width: 300px; /* Optional: constrain max button width */
         }
 
         .action-button::before {
@@ -316,6 +317,7 @@
         /* --- Thank You Section --- */
         .thank-you-section {
             padding: 1.5rem;
+            /* IMPROVEMENT: Matched background color to the Diwali theme */
             background: rgba(241, 196, 15, 0.1);
             border-radius: 12px;
             margin: 1.5rem 0 0;
@@ -471,11 +473,12 @@
             margin: 1.2rem 0;
         }
         
+        /* IMPROVEMENT: Flex container for popup buttons for better alignment */
         .popup-actions {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.75rem; /* Space between buttons */
             margin-top: 1rem;
         }
 
@@ -673,16 +676,24 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const logoImagePath = 'logo.png';
-        const backgroundImagePath = 'bg.jpeg';
+        // =================================================================
+        // --- 🖼️ IMAGE CONFIGURATION - EDIT YOUR IMAGE PATHS HERE 🖼️ ---
+        // =================================================================
+        const logoImagePath = 'logo.png'; // Your logo's filename
+        const backgroundImagePath = 'bg.jpeg'; // Your background's filename
+        // =================================================================
 
+        // =================================================================
+        // --- ⚙️ OFFERS CONFIGURATION - EDIT YOUR OFFERS HERE ⚙️ ---
+        // =================================================================
         const offers = [
-            { label: '15% Off\non all services', color: '#f39c12' },
-            { label: '25% Off\nHaircut', color: '#e67e22' },
-            { label: 'Free\nThreading', color: '#d35400' },
-            { label: '₹500 Off on\n₹2000 Service', color: '#c0392b' },
-            { label: 'Pedicure\nGet Manicure Free', color: '#e74c3c' }
+            { label: '15% Off\non all services', color: '#f39c12' },  // Orange
+            { label: '25% Off\nHaircut', color: '#e67e22' },            // Darker Orange
+            { label: 'Free\nThreading', color: '#d35400' },          // Burnt Orange
+            { label: '₹500 Off on\n₹2000 Service', color: '#c0392b' }, // Pomegranate Red
+            { label: 'Pedicure\nGet Manicure Free', color: '#e74c3c' } // Alizarin Red
         ];
+        // =================================================================
 
         const wheelCanvas = document.getElementById('spin-wheel');
         const spinBtn = document.getElementById('spin-btn');
@@ -697,26 +708,24 @@
         const currentRewardContainer = document.getElementById('current-reward-container');
         const currentRewardText = document.getElementById('current-reward-text');
         
+        // Modals
         const initialModal = document.getElementById('initial-modal');
         const initialFollowBtn = document.getElementById('initial-follow-btn');
         const offerModal = document.getElementById('offer-modal');
         const offerText = document.getElementById('offer-text');
         const popupActionArea = document.getElementById('popup-action-area');
-        const logoDisplay = document.getElementById('logo-display');
-
-        // --- CACHE UPDATE: Changed 'onamSpin_' to 'diwaliSpin_' ---
-        // This resets the game for all users for the new campaign.
+        
         const state = {
-            get hasClickedInsta() { return localStorage.getItem('diwaliSpin_insta') === 'true'; },
-            set hasClickedInsta(v) { localStorage.setItem('diwaliSpin_insta', v); },
-            get hasSpunOnce() { return localStorage.getItem('diwaliSpin_spun1') === 'true'; },
-            set hasSpunOnce(v) { localStorage.setItem('diwaliSpin_spun1', v); },
-            get hasClickedFb() { return localStorage.getItem('diwaliSpin_fb') === 'true'; },
-            set hasClickedFb(v) { localStorage.setItem('diwaliSpin_fb', v); },
-            get hasSpunTwice() { return localStorage.getItem('diwaliSpin_spun2') === 'true'; },
-            set hasSpunTwice(v) { localStorage.setItem('diwaliSpin_spun2', v); },
-            get currentReward() { return localStorage.getItem('diwaliSpin_currentReward') || ''; },
-            set currentReward(v) { localStorage.setItem('diwaliSpin_currentReward', v); }
+            get hasClickedInsta() { return localStorage.getItem('onamSpin_insta') === 'true'; },
+            set hasClickedInsta(v) { localStorage.setItem('onamSpin_insta', v); },
+            get hasSpunOnce() { return localStorage.getItem('onamSpin_spun1') === 'true'; },
+            set hasSpunOnce(v) { localStorage.setItem('onamSpin_spun1', v); },
+            get hasClickedFb() { return localStorage.getItem('onamSpin_fb') === 'true'; },
+            set hasClickedFb(v) { localStorage.setItem('onamSpin_fb', v); },
+            get hasSpunTwice() { return localStorage.getItem('onamSpin_spun2') === 'true'; },
+            set hasSpunTwice(v) { localStorage.setItem('onamSpin_spun2', v); },
+            get currentReward() { return localStorage.getItem('onamSpin_currentReward') || ''; },
+            set currentReward(v) { localStorage.setItem('onamSpin_currentReward', v); }
         };
 
         const ctx = wheelCanvas.getContext('2d');
@@ -725,10 +734,12 @@
         let radius, isSpinning = false, currentRotation = 0;
 
         function updateProgressDots() {
+            // Reset all dots
             step1Dot.classList.remove('active');
             step2Dot.classList.remove('active');
             step3Dot.classList.remove('active');
             
+            // Activate based on progress
             if (state.hasClickedInsta) step1Dot.classList.add('active');
             if (state.hasSpunOnce) step2Dot.classList.add('active');
             if (state.hasSpunTwice) step3Dot.classList.add('active');
@@ -774,7 +785,7 @@
         const drawWheel = () => {
             if (!radius) return;
             ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-            ctx.font = `bold ${Math.max(radius * 0.1, 12)}px Inter`;
+            ctx.font = `bold ${Math.max(radius * 0.1, 12)}px Inter`; // Slightly smaller base font size
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             
@@ -798,6 +809,7 @@
                 ctx.translate(radius, radius);
                 ctx.rotate(startAngle + angle + (sliceAngleRad / 2));
                 
+                // --- IMPROVEMENT: Perfect vertical centering for multi-line text ---
                 const lines = offer.label.split('\n');
                 const lineHeight = parseFloat(ctx.font) * 1.2;
                 const totalTextHeight = lines.length * lineHeight;
@@ -806,7 +818,8 @@
                 lines.forEach((line, j) => {
                     ctx.fillText(line, radius * 0.55, startY + (j * lineHeight));
                 });
-                
+                // --- End of improvement ---
+
                 ctx.restore();
             });
         };
@@ -860,6 +873,7 @@
                 `;
             }
 
+            // IMPROVEMENT: Using a flex container for buttons
             popupActionArea.innerHTML = `
                 <div class="popup-actions">
                     ${actionButtonsHTML}
@@ -869,6 +883,7 @@
             
             offerModal.classList.add('visible');
             
+            // Add event listeners after injecting the HTML
             offerModal.querySelector('#close-popup-btn').addEventListener('click', hideOfferPopup);
             const fbBtn = offerModal.querySelector('#popup-follow-fb-btn');
             if (fbBtn) {
